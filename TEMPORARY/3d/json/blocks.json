@@ -1,0 +1,50 @@
+{
+  "air" : {
+    "invisible" : true,
+    "transparent" : true
+  },
+  "darkStone" : {},
+  "dirt" : {},
+  "grass" : {
+    "model" : [
+      {
+        "image" : "grassSide",
+        "+y" : "grassTop",
+        "-y" : "dirt"
+      }
+    ]
+  },
+  "shortGrass" : {
+    "transparent" : true,
+    "showFaces" : true,
+    "model" : [
+      {
+        "image" : null,
+        "x1" : 3,
+        "x2" : 13,
+        "+x" : "shortGrass",
+        "-x" : "shortGrass"
+      },
+      {
+        "image" : null,
+        "z1" : 3,
+        "z2" : 13,
+        "+z" : "shortGrass",
+        "-z" : "shortGrass"
+      }
+    ]
+  },
+  "stone" : {},
+  "water" : {
+    "transparent" : true,
+    "partialTransparent" : true,
+    "obscureSelf" : true,
+    "model" : [
+      {
+        "image" : null,
+        "+y" : "water",
+        "y2" : 13
+      }
+    ]
+  }
+}

@@ -1,0 +1,35 @@
+main {
+  color: var(--text-dark);
+}
+
+#sec1 {
+  box-shadow: inset 0 -10px 6px -8px rgba(0, 0, 0, 0.1);
+  background: var(--bkgd-mid);
+}
+#tiki-img-container {
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+}
+#tiki-img {
+  width: 280px;
+  max-width: 50%;
+  margin: auto 0;
+  transform: scaleX(-1);
+}
+#tiki-img-desc {
+  border-left: 1px solid var(--blue-light);
+  padding: 12px 0 12px 30px;
+  margin: auto 0;
+  min-height: 100px;
+}
+
+#sec2 {
+  background: var(--bkgd-light);
+  box-shadow: inset 0 50px 30px -35px rgba(255, 255, 255, 0.05);
+}
+
+#sec3 {
+  box-shadow: inset 0 10px 6px -8px rgba(0, 0, 0, 0.1);
+  background: var(--bkgd-mid);
+}

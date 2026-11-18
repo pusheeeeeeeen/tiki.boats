@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Visualization With Physics - Tiki</title>
+    <style>
+      html, body, #wrapper {
+        max-height: 100vh;
+        min-height: unset;
+        overflow: hidden;
+      }
+      
+      main {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #options {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        color: var(--text-dark);
+      }
+      #options-inner {
+        margin: 0 40px;
+      }
+      #options-inner > span {
+        position: relative;
+        top: 2px;
+      }
+      select {
+        margin-right: 20px;
+      }
+      #canvas-wrapper {
+        flex-grow: 1;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <div id = "options">
+          <div id = "options-inner">
+            <span>Color:</span>
+            <select id = "color">
+              <option selected>Gem</option>
+              <option>Cost</option>
+              <option>Type</option>
+            </select>
+            <span>Size:</span>
+            <select id = "size">
+              <option>Gem</option>
+              <option selected>Cost</option>
+              <option>Type</option>
+            </select>
+            <span># of Sides:</span>
+            <select id = "sides">
+              <option>Gem</option>
+              <option>Cost</option>
+              <option selected>Type</option>
+            </select>
+          </div>
+          <div id = "item-info"></div>
+        </div>
+        <div id = "canvas-wrapper"></div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../../", title = "visualization with physics", footer = false</script>
+  <script src = "../../helper-fns.js"></script>
+  <script src = "../../default-script.js"></script>
+  <script src = "./matter.js"></script>
+  <script src = "./data.js"></script>
+  <script src = "./script.js"></script>
+</html>

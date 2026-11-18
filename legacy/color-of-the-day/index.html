@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Tiki</title>
+    <style>
+      main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .dark-text tbody {
+        color: black;
+      }
+      .dark-text tfoot, .dark-text thead {
+        color: #444;
+      }
+      td {
+        width: 100px;
+        text-align: center;
+      }
+      tbody {
+        color: white;
+        font-size: 35px;
+      }
+      tfoot {
+        color: #ccc;
+        font-size: 24px;
+      }
+      thead {
+        color: #ccc;
+        font-size: 16px;
+      }
+
+      thead td {
+        padding-bottom: 15px;
+        position: relative;
+      }
+      thead td:not(:first-child)::before {
+        content: "/";
+        display: block;
+        position: absolute;
+        left: 2px;
+        transform: translateX(-100%);
+      }
+
+      .dark-text #also-see {
+        color: black;
+      }
+      #also-see {
+        color: white;
+        position: absolute;
+        bottom: 10px;
+        font-size: 15px;
+      }
+      #also-see-link {
+        color: inherit !important;
+        text-decoration: underline;
+      }
+      .dark-text #also-see-link:hover {
+        color: #444 !important;
+      }
+      #also-see-link:hover {
+        color: #ccc !important;
+      }
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <table>
+          <thead>
+            <tr>
+              <td id = "month"></td>
+              <td id = "day"></td>
+              <td id = "year"></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id = "red"></td>
+              <td id = "green"></td>
+              <td id = "blue"></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>RED</td>
+              <td>GREEN</td>
+              <td>BLUE</td>
+            </tr>
+          </tfoot>
+        </table>
+        <div id = "also-see">ALSO SEE <a id = "also-see-link" href = "../color-of-the-second">COLOR OF THE SECOND</a></div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../", title = "color of the day", footer = false</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script>
+    var date = new Date(),
+        red = date.getMonth() % 4 / 3,
+        green = (date.getDate() - 1) % 8 / 7,
+        blue = parseInt(date.getFullYear().toString().slice(-2)) % 4 / 3,
+        lightness = 0.21 * red + 0.72 * green + 0.07 * blue
+
+    if (lightness > 0.6) document.body.classList.add("dark-text")
+
+    $("main").style.background = `rgb(${Math.round(red * 255)}, ${Math.round(green * 255)}, ${Math.round(blue * 255)})`
+
+    id("red").innerText = Math.round(red * 255)
+    id("green").innerText = Math.round(green * 255)
+    id("blue").innerText = Math.round(blue * 255)
+
+    id("month").innerText = date.getMonth() + 1
+    id("day").innerText = date.getDate()
+    id("year").innerText = date.getFullYear().toString().slice(-2)
+  </script>
+</html>

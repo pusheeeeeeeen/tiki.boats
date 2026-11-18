@@ -1,0 +1,70 @@
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+#top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 30px;
+  box-shadow: 0 0 6px 6px #0002;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+#logo {
+  font-size: min(15vw, 60px);
+  font-weight: bold;
+  filter: drop-shadow(0 0.08em #0007);
+  margin: 0.9em 0 0.4em;
+}
+.logo-letter {
+  color: transparent;
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.guess-inner, #input-wrapper {
+  background: #0007;
+  font-size: 30px;
+  font-weight: 500;
+  font-family: Menlo, monospace;
+  letter-spacing: 0.2em;
+  padding-left: 0.5ch;
+}
+#input, .guess-color {
+  width: 8.5ch;
+}
+#input {
+  background: transparent;
+  border: none;
+  outline: none;
+  letter-spacing: inherit;
+  padding: 0;
+}
+
+#bottom {
+  flex-grow: 1;
+  overflow: scroll;
+  padding: 30px 0 100px;
+  margin-bottom: 20px;
+  mask-image: linear-gradient(to top, transparent, black 50px);
+}
+
+#guesses {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+.guess {
+  padding: 8px 50px;
+  white-space: nowrap;
+}
+.guess-color {
+  display: inline-block;
+}

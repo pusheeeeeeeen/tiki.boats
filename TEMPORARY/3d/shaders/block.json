@@ -1,0 +1,21 @@
+{
+  "attributes" : {
+    "a_pos" : {
+      "type" : "vec3",
+      "size" : 3,
+      "dataType" : "FLOAT"
+    },
+    "a_texPos" : {
+      "type" : "vec2",
+      "size" : 2,
+      "dataType" : "UNSIGNED_SHORT"
+    }
+  },
+  "uniforms" : {
+    "u_projectionMat" : "mat4",
+    "u_viewMat" : "mat4",
+    "u_tex": "sampler2D",
+    "u_texWidth" : "float"
+  },
+  "indexBuffer" : true
+}

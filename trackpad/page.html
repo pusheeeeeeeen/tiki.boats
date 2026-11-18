@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <script src = "../default-script.js"></script>
+    <link href = "../default-styles.css" rel = "stylesheet" type = "text/css">
+    <link href = "../page-styles.css" rel = "stylesheet" type = "text/css">
+    <link rel = "preload" href = "../fonts/roboto.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-italic.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold-italic.ttf" as = "font" type = "font/ttf">
+    <style>
+      #banner {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        text-shadow: 2px 2px #0008;
+        background: #000a;
+        border-bottom: 2px solid #444a;
+      }
+      #banner.hide {
+        display: none;
+      }
+      #banner-content {
+        flex-grow: 1;
+        padding: 8px 16px;
+      }
+      #banner-x {
+        aspect-ratio: unset;
+        flex-shrink: 0;
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      #banner-x:hover:not(:active) {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id = "banner" class = "hide">
+      <div id = "banner-content">
+        This site only works in Safari, and on devices that can detect touch pressure, such as newer Apple laptops.
+        <br>
+        Even so, this site may not work, as it uses features that are not consistently supported.
+      </div>
+      <button id = "banner-x" class = "reset">
+        <icon image = "close"></icon>
+      </button>
+    </div>
+  </body>
+  <script src = "../helpers.js"></script>
+  <script>
+    if (!("onwebkitmouseforcechanged" in window))
+      id("banner").classList.remove("hide")
+
+    let canShowBanner = true
+
+    id("banner-x").onclick = () => {
+      id("banner").classList.add("hide")
+      id("banner-x").blur()
+
+      canShowBanner = false
+    }
+    
+    if (parent === window) {
+      onwebkitmouseforcechanged = e => { update(e.webkitForce) }
+      
+      onwebkitmouseforcewillbegin = e => {
+        e.preventDefault()
+        return false
+      }
+    } else {
+      parent.onwebkitmouseforcechanged = e => { update(e.webkitForce) }
+
+      onwebkitmouseforcewillbegin = e => {
+        e.preventDefault()
+        return false
+      }
+    }
+     
+    function update(force) {
+      if (canShowBanner && !force)
+        id("banner").classList.remove("hide")
+      else
+        canShowBanner = false
+      
+      force = clamp((force - 1) / 2, 0, 1)
+      
+      document.body.style.background = rgb(0.5 - force, force * 2 - 1, 1.8 - force)
+    }
+
+    function rgb(r, g, b) {
+      return `rgb(${r * 255}, ${g * 255}, ${b * 255})`
+    }
+
+    update(1)
+  </script>
+</html>

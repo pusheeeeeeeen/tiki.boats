@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Tiki</title>
+    <link href = "./style.css" type = "text/css" rel = "stylesheet">
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <div id = "desc">
+          don’t ask — just click
+        </div>
+        <div id = "burgs"></div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../", title = "burger stack"</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script src = "../secret.js"></script>
+  <script>
+    var burgNum = 0, burgPos = 0
+    $("main").onclick = event => {
+      id("desc").css({
+        opacity : 0,
+        filter : "blur(20px)",
+        transform : "translateY(10px)"
+      })
+
+      if (burgPos >= $("main").offsetHeight) unlockSecret("Burger stack")
+      
+      var size = 1.4 ** -burgNum * 220 + 4
+        
+      id("burgs").addEnd(elem("div.burg").text("🍔").css({
+        fontSize : size + "px",
+        bottom : burgPos - size * 0.2 + "px"
+      }))
+
+      burgPos += size * 0.7
+
+      burgNum++
+    }
+  </script>
+</html>

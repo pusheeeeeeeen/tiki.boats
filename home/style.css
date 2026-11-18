@@ -1,0 +1,33 @@
+#logo-section {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  height: var(--height);
+  position: relative;
+  background: var(--blue-dark);
+  overflow: hidden;
+  background: #17577a;
+}
+#logo-text {
+  pointer-events: none;
+  font-size: 30vmin;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  rotate: -5deg;
+}
+#fish-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#placeholder {
+  background: repeating-linear-gradient(to bottom right, var(--page-bg) 0, var(--page-bg) 150px, var(--blue-dark) 150px, var(--blue-dark) 300px);
+  margin: 0;
+  height: 100vh;
+  padding-top: 40vh;
+  text-align: center;
+}

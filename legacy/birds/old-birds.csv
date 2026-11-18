@@ -1,0 +1,64 @@
+location,name,times,noise,time,date,rarity,rainy
+D2:5.3,Red Tailed Hawk,6,Medium,10:50,11/3/2022,,FALSE
+D2:5.3,Red-shouldered Hawk,8,Medium,10:50,11/3/2022,,FALSE
+F3:4.3,American Crow,1,Medium,10:50,11/3/2022,,FALSE
+F3:4.3,Red-shouldered Hawk,8,Medium,10:50,11/3/2022,,FALSE
+F3:4.3,American Robin,2,Medium,10:50,11/3/2022,,FALSE
+F3:4.3,Semipalmated Plover,1,Medium,10:50,11/3/2022,Orange,FALSE
+F3:4.3,Horned Lark,1,Medium,10:50,11/3/2022,Red,FALSE
+E3:4.5,American Crow,2,High,10:50,11/3/2022,,FALSE
+E3:4.5,Red-Shouldered Hawk,5,High,10:50,11/3/2022,,FALSE
+G5:4.2,Chestnut Backed Chickadee,9,Low,10:50,11/8/2022,,TRUE
+G5:4.2,Bushtit,13,Low,10:50,11/8/2022,,TRUE
+G5:4.2,Purple Finch,4,Low,10:50,11/8/2022,Orange,TRUE
+G5:4.2,Bewick's Wren,1,Low,10:50,11/8/2022,,TRUE
+G5:4.2,American Robin,2,Low,10:50,11/8/2022,,TRUE
+G3:4.1,Hermit Thrush,1,Medium,10:50,11/8/2022,,TRUE
+G3:4.1,American Robin,1,Medium,10:50,11/8/2022,,TRUE
+G3:4.1,House Wren,3,Medium,10:50,11/8/2022,Orange,TRUE
+G4:5.1,American Robin,1,Low,10:50,11/8/2022,,TRUE
+G4:5.1,Bewick's Wren,3,Low,10:50,11/8/2022,,TRUE
+G4:5.1,Brown Creeper,6,Low,10:50,11/8/2022,Orange,TRUE
+G4:5.1,Black Scoter,2,Low,10:50,11/8/2022,Orange,TRUE
+G4:5.1,Dark-eyed Junco,1,Low,10:50,11/8/2022,,TRUE
+G4:5.1,Purple Finch,2,Low,10:50,11/8/2022,Orange,TRUE
+G4:5.1,Song Sparrow,1,Low,10:50,11/8/2022,,TRUE
+H3:4.2,Purple Finch,5,Low,8:40,11/10/2022,Orange,FALSE
+H3:4.2,Chestnut Backed Chickadee,27,Low,8:40,11/10/2022,,FALSE
+H3:4.2,Oak Titmouse,1,Low,8:40,11/10/2022,Orange,FALSE
+H3:4.2,American Robin,2,Low,8:40,11/10/2022,,FALSE
+H3:4.2,Ruby-crowned Kinglet,1,Low,8:40,11/10/2022,,FALSE
+H3:4.2,Black Pheobe,15,Low,8:40,11/10/2022,,FALSE
+H3:4.2,Acorn Woodpecker,14,Low,8:40,11/10/2022,Red,FALSE
+H4:3.3,Acorn Woodpecker,6,Low,8:40,11/10/2022,Red,FALSE
+H4:3.3,Oak Titmouse,1,Low,8:40,11/10/2022,Orange,FALSE
+H4:3.3,American Robin,5,Low,8:40,11/10/2022,,FALSE
+H4:3.3,Anna's Hummingbird,1,Low,8:40,11/10/2022,,FALSE
+I3:4.5,Acorn Woodpecker,3,Low,9:00,11/10/2022,Red,FALSE
+I3:4.5,Ruby-crowned Kinglet,2,Low,9:00,11/10/2022,,FALSE
+I3:4.5,Purple Finch,3,Low,9:00,11/10/2022,Orange,FALSE
+J1:5.2,Bewick's Wren,1,Low,9:00,11/10/2022,,FALSE
+J1:5.2,Yellow-rumped Warbler,4,Low,9:00,11/10/2022,,FALSE
+J1:5.2,Purple Finch,1,Low,9:00,11/10/2022,Orange,FALSE
+J1:5.2,Spotted Towhee,5,Low,9:00,11/10/2022,,FALSE
+J1:5.2,Chestnut-backed Chickadee,1,Low,9:00,11/10/2022,,FALSE
+K2:4.1,Northern Mockingbird,1,None,9:15,11/10/2022,,FALSE
+K2:4.1,Steller's Jat,4,None,9:15,11/10/2022,,FALSE
+K2:4.1,American Crow,3,None,9:15,11/10/2022,,FALSE
+K2:4.1,Chestnut-backed Chickadee,1,None,9:15,11/10/2022,,FALSE
+K2:4.1,Acorn Woodpecker,4,None,9:15,11/10/2022,Red,FALSE
+K5:5.1,Dark-eyed Junco,1,None,9:15,11/10/2022,,FALSE
+K5:5.1,Red-breasted Nuthatch,1,None,9:15,11/10/2022,Orange,FALSE
+K5:5.1,Steller's Jay,2,None,9:15,11/10/2022,,FALSE
+K5:5.1,Acorn Woodpecker,2,None,9:15,11/10/2022,Red,FALSE
+K5:5.1,Common Raven,1,None,9:15,11/10/2022,,FALSE
+K5:5.1,American Robin,1,None,9:15,11/10/2022,,FALSE
+K5:5.1,Chestnut-backed Chickadee,1,None,9:15,11/10/2022,,FALSE
+D3:8.2,American Crow,1,High,9:40,11/10/2022,,FALSE
+D3:7.3,House Wren,3,High,9:40,11/10/2022,Orange,FALSE
+D3:7.3,Red-winged Blackbird,2,High,9:40,11/10/2022,Orange,FALSE
+D3:7.3,Chestnut-backed Chickadee,4,High,9:40,11/10/2022,,FALSE
+D3:7.3,Brown Creeper,4,High,9:40,11/10/2022,Orange,FALSE
+D3:7.3,Ruby-crowned Kinglet,2,High,9:40,11/10/2022,,FALSE
+F1:8.1,Anna's Hummingbird,14,Low,9:40,11/10/2022,,FALSE
+F1:8.1,Chestnut-backed Chickadee,1,Low,9:40,11/10/2022,,FALSE

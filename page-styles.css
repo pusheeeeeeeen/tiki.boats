@@ -1,0 +1,107 @@
+body {
+  overflow: hidden;
+
+  --section-margin-vertical: min(70px, calc(8vh + 20px));
+  --section-margin-horizontal: calc(10vw + 10px);
+  --section-margin: var(--section-margin-vertical) var(--section-margin-horizontal);
+}
+main {
+  height: 100%;
+  overflow-y: auto;
+}
+
+section {
+  margin: var(--section-margin);
+}
+
+textarea, select {
+  background: var(--bg-highlight);
+  font-size: 14px;
+}
+
+select {
+  appearance: none;
+  padding: 0 0.4em;
+}
+
+a {
+  position: relative;
+  display: inline-block;
+}
+a::before {
+  content: attr(data-linktext);
+  color: var(--blue-light);
+  white-space: pre;
+  text-decoration: underline;
+  display: block;
+  padding: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  overflow: hidden;
+}
+a:hover::before {
+  width: 100%;
+  animation: rainbow 20s ease-in-out infinite;
+}
+a:hover:not([instant])::before {
+  transition: width 0.15s ease-in-out;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--header-font);
+}
+
+@keyframes rainbow {
+  to {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.tutorial {
+  display: none;
+}
+.tutorial.show {
+  display: revert;
+  border: 1px solid var(--blue-dark);
+  padding: 4px 10px;
+  margin: 12px 0;
+  position: relative;
+}
+.tutorial.show::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 5px -10px;
+  pointer-events: none;
+  border-left: 1px solid var(--blue-dark);
+  border-right: 1px solid var(--blue-dark);
+}
+
+/*
+.scroll-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  height: 100px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+
+  --c0: transparent;
+  --c1: rgba(200, 215, 255, 0.01);
+  --c2: rgba(200, 215, 255, 0.025);
+  --c3: rgba(200, 215, 255, 0.045);
+}
+#scroll-indicator-top {
+  top: 0;
+  background: linear-gradient(to top, var(--c0), var(--c1), var(--c2), var(--c3));
+}
+#scroll-indicator-bottom {
+  bottom: 0;
+  background: linear-gradient(to bottom, var(--c0), var(--c1), var(--c2), var(--c3));
+}
+*/

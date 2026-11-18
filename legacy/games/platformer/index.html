@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "./images/sad_player.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Platformer - Tiki</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+      html, body, #wrapper {
+        max-height: 100vh;
+        min-height: unset;
+        overflow: hidden;
+      }
+      
+      main {
+        overflow: hidden;
+        background: #404244 !important;
+      }
+      #canvas {
+        display: block;
+      }
+      #score {
+        font-family: 'Fredoka One', sans-serif;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 50px;
+        font-size: 20px;
+        padding: 20px;
+        pointer-events: none;
+        text-shadow: 1px -1px black,
+          1px 0 black,
+          1px 1px black,
+          0 1px black,
+          -1px 1px black,
+          -1px 0 black,
+          -1px -1px black,
+          0 -1px black;
+      }
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <div id = "score"></div>
+        <canvas id = "canvas"></canvas>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../../", title = "platformer", footer = false</script>
+  <script src = "./howler.js"></script>
+  <script src = "../../helper-fns.js"></script>
+  <script src = "../../default-script.js"></script>
+  <script src = "./images.js"></script>
+  <script src = "./script.js"></script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <meta name = "description" content = "Home of the tiki fish">
+    <meta name = "theme-color" content = "#44aacc">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <link href = "default-styles.css" rel = "stylesheet" type = "text/css">
+    <link href = "style.css" rel = "stylesheet" type = "text/css">
+    <title>Tiki</title>
+    <link id = "favicon" href = "favicon.png" rel = "icon">
+    <script src = "helpers.js" defer></script>
+    <script src = "pages.js" defer></script>
+    <script src = "script.js" defer></script>
+    <script src = "settings.js" defer></script>
+    <script src = "commands.js" defer></script>
+  </head>
+  <body class = "hide-nav">
+
+    <!-- main nav -->
+    <div id = "nav-wrapper">
+      <nav class = "nav">
+        <button id = "home-button" class = "icon-hover-wrapper" data-preload = "home">
+          <icon image = "home"></icon>
+        </button>
+        <div id = "page-controls-wrapper">
+          <div id = "page-title"></div>
+          <div id = "page-controls">
+            <div id = "page-controls-inner">
+              <button id = "copy-page-link-button" class = "icon-hover-wrapper">
+                <icon image = "link"></icon>
+              </button>
+            </div>
+            <div id = "page-controls-gradient"></div>
+          </div>
+        </div>
+        <div class = "nav-spacer"></div>
+        <button id = "settings-button" class = "icon-hover-wrapper settings-button" data-preload = "settings">
+          <icon image = "settings"></icon>
+        </button>
+      </nav>
+    </div>
+
+    <main>
+      
+      <!-- inner page iframe -->
+      <div id = "iframe-wrapper"></div>
+    
+      <!-- hamburger menu -->
+      <div id = "hamburger-menu-wrapper" class = "hidden">
+        <div id = "hamburger-bg"></div>
+        <div id = "hamburger-navbar-replacement">
+          <button id = "hamburger-settings-button" class = "icon-hover-wrapper settings-button" data-preload = "settings">
+            <icon image = "settings"></icon>
+          </button>
+        </div>
+        <div id = "hamburger-menu">
+          
+          <div class = "hamburger-item">
+            <a data-page = "home">Homepage</a>
+          </div>  
+          <div class = "hamburger-item">
+            <a data-page = "directory">Directory</a>
+          </div>
+          <div class = "hamburger-item">
+            <a data-page = "about">About TIKI</a>
+          </div>
+          <div class = "hamburger-item">
+            <a href = "legacy/">Legacy Homepage</a>
+          </div>
+          
+          <div class = "hamburger-separator"></div>
+          
+          <div class = "hamburger-item">
+            <a data-page = "games">Games</a>
+          </div>
+          <div class = "hamburger-item">
+            <a data-page = "platformer">Tiki Platformer 2.0</a>
+          </div>
+          <div class = "hamburger-item">
+            <a data-page = "tetris">Tiki Tetris</a>
+          </div>
+          <div class = "hamburger-item">
+            <a data-page = "hex-chess">Hexagonal Chess</a>
+          </div>
+          
+        </div>
+      </div>
+      
+    </main>
+
+    <!-- nav overlay / hamburger button -->
+    <div id = "nav-overlay" class = "nav">
+      <div id = "nav-overlay-gradient"></div>
+      <div class = "nav-spacer"></div>
+      <button id = "hamburger-button" class = "icon-hover-wrapper">
+        <icon id = "hamburger-closed-icon" image = "hamburger"></icon>
+        <icon id = "hamburger-opened-icon" class = "hidden" image = "close"></icon>
+      </button>
+    </div>
+
+    <!-- overlay windows -->
+    <div id = "overlay-windows"></div>
+
+    <!-- notifications -->
+    <div id = "notification-container">
+      <div id = "notifications"></div>
+      <div id = "clear-notifications-wrapper" class = "hidden">
+        <div id = "notification-count">
+          0 notifications
+        </div>
+        <button id = "clear-notifications" class = "reset">clear all</button>
+      </div>
+    </div>
+
+    <!-- command input -->
+    <div id = "command-wrapper">
+      <div id = "command-slash">/</div>
+      <input id = "command-input" autocomplete = "off" autocorrect = "off" autocapitalize = "off" spellcheck = "false">
+      <div id = "command-autofill"></div>
+    </div>
+
+    <!-- noscript -->
+    <noscript id = "noscript">
+      <div id = "noscript-fish-top"></div>
+      <div id = "noscript-text">
+        You need to enable JavaScript to view this page.
+      </div>
+      <div id = "noscript-subtext">
+        Once you have enabled JavaScript, <a href = "./">reload</a>.
+      </div>
+      <div id = "noscript-fish-bottom"></div>
+    </noscript>
+  
+  </body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <script src = "../default-script.js"></script>
+    <link href = "../default-styles.css" rel = "stylesheet" type = "text/css">
+    <link href = "../page-styles.css" rel = "stylesheet" type = "text/css">
+    <link rel = "preload" href = "../fonts/roboto.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-italic.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold-italic.ttf" as = "font" type = "font/ttf">
+    <link href = "style.css" rel = "stylesheet" type = "text/css">
+  </head>
+  <body>
+    <main class = "has-canvas">
+      <!-- canavs -->
+      <canvas id = "canvas"></canvas>
+
+      <!-- achievements button -->
+      <button id = "achievements-button" class = "hidden gray-button">Achievements</button>
+      
+      <!-- pause button -->
+      <button id = "pause-button" class = "hidden gray-button">Pause</button>
+
+      <!-- skin selector -->
+      <div id = "skins" class = "hidden"></div>
+      <div id = "jacob-input-wrapper" class = "hidden">
+        <input id = "jacob-input" type = "password" autocomplete = "off"  >
+      </div>
+
+      <!-- seed input -->
+      <div id = "seed-wrapper" class = "hidden">
+        <div>Leave blank for a random seed</div>
+        <input id = "seed-input" placeholder = "Seed"></input>
+        <div id = "seed-info-icon" tabindex = "0">
+          <span>i</span>
+        </div>
+        <div id = "seed-info-text">
+          The seed determines the layout of the level, including platforms, spikes, and coins.<br>
+          <br>
+          Seeded runs do not count towards highscores, and coins are not registered.
+        </div>
+      </div>
+      
+      <!-- in-game info -->
+      <div id = "info" class = "hidden">
+        <div>
+          Score: <span id = "score">0</span>
+        </div>
+        <div>
+          Distance: <span id = "distance">0</span>m
+        </div>
+        <div id = "replay-marker">
+          <img src = "assets/images/retry.png">
+          <div>
+            Replay of
+            <span id = "replay-seed" title = "Click to copy"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- contraption -->
+      <div id = "contraption-wrapper" class = "hidden">
+        <img src = "./assets/images/belt1.png" id = "belt" class = "contraption-piece" draggable = "false">
+      </div>
+     
+      
+      <!-- achievements menu -->
+      <div id = "achievements" class = "hidden">
+        <div id = "achievements-title">
+          Achievements
+          <button id = "open-contraption" class = "gray-button">Contraption</button>
+          <button id = "leave-achievements" class = "gray-button"><img src = "./assets/images/home.png" draggable = "false"></button>
+        </div>
+        <div id = "achievements-scroll">
+          <div id = "achievements-inner"></div>
+          <div class = "separator"></div>
+          <div id = "menu-stats">
+            Highscore: <span id = "stat-highscore"></span><br>
+            Best distance: <span id = "stat-bestDistance"></span><br>
+            <div class = "spacer"></div>
+            Total score: <span id = "stat-totalScore"></span><br>
+            Total distance: <span id = "stat-totalDistance"></span><br>
+            Total jumps: <span id = "stat-totalJumps"></span><br>
+            <div class = "spacer"></div>
+            Deaths: <span id = "stat-totalDeaths"></span>
+            (<span id = "stat-deathsByFall"></span> by falling,
+            <span id = "stat-deathsBySpike"></span> by spikes)<br>
+            Resets: <span id = "stat-totalResets"></span><br>
+            <div class = "spacer"></div>
+            Platforms survived: <span id = "stat-platformsSurvived"></span>
+            (<span id = "stat-platformsSurvivedS"></span> tiny,
+            <span id = "stat-platformsSurvivedM"></span> small,
+            <span id = "stat-platformsSurvivedL"></span> normal,
+            <span id = "stat-platformsSurvivedX"></span> large)<br>
+            Platforms skipped: <span id = "stat-platformsSkipped"></span><br>
+            <div class = "spacer"></div>
+            Current coins: <img src = "./assets/images/coin-icon.png" class="coin-icon"><span id = "stat-coins"></span><br>
+            Total coins: <img src = "./assets/images/coin-icon.png" class="coin-icon"><span id = "stat-totalCoins"></span><br>
+            <div class = "spacer"></div>
+            Time played: <span id = "stat-timePlayed"></span><br>
+            Account created: <span id = "stat-created"></span>
+          </div>
+          <div class = "separator"></div>
+          <button id = "clear-achievements" class = "gray-button">Clear All Saved Data</button>
+        </div>
+      </div>
+      
+      <!-- menu info -->
+      <div id = "menu-info" class = "hidden">
+        <div>
+          <div>
+            Score: <span id = "menu-score">0</span>
+          </div>
+          <div class = "info-subtitle">
+            Distance: <span id = "menu-distance">0</span>m
+          </div>
+          <div>
+            Highscore: <span id = "menu-highscore">0</span>
+          </div>
+          <div class = "info-subtitle">
+            Best Distance: <span id = "menu-best-distance">0</span>m
+          </div>
+          <div id = "replay-disclaimer" class = "info-subtitle">
+            Replay runs do not count towards highscores
+          </div>
+        </div>
+      </div>
+      
+      <!-- touchscreen disclaimer -->
+      <div id = "touchscreen-banner" class = "hidden">
+        <div>
+          <span>
+            This game may not work on touchscreen devices.
+          </span>
+        </div>
+        <button id = "close-touchscreen-banner" class = "icon-hover-wrapper blue">
+          <icon image = "close"></icon>
+        </button>
+      </div>
+
+      <!-- loading screen -->
+      <div id = "loading-screen">
+        <div>
+          Loading<br>
+          <span id = "loading-percentage">0</span>%
+        </div>
+      </div>
+    </main>
+  </body>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity = "sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA==" crossorigin = "anonymous" referrerpolicy = "no-referrer"></script>
+  <script src = "../helpers.js"></script>
+  <script src = "random.js"></script>
+  <script src = "webgl.js"></script>
+  <script src = "script.js"></script>
+  <script src = "skins.js"></script>
+  <script src = "music.js"></script>
+  <script src = "platform-generation.js"></script>
+  <script src = "platform.js"></script>
+  <script src = "spike.js"></script>
+  <script src = "shaders/image.js"></script>
+  <script src = "shaders/rectangle.js"></script>
+  <script src = "shaders/tinted-image.js"></script>
+  <script src = "shaders/chain.js"></script>
+  <script src = "shaders/pipe.js"></script>
+  <script src = "shaders/background.js"></script>
+  <script src = "shaders/stripe-bg.js"></script>
+  <script src = "shaders/skin.js"></script>
+  <script src = "shaders/coin.js"></script>
+  <script src = "shaders/death.js"></script>
+  <script src = "filters/none.js"></script>
+  <script src = "filters/double-jump.js"></script>
+  <script src = "filters/coin.js"></script>
+  <script src = "level.js"></script>
+  <script src = "ui-data.js"></script>
+  <script src = "ui.js"></script>
+  <script src = "button.js"></script>
+  <script src = "entity.js"></script>
+  <script src = "player.js"></script>
+  <script src = "coin.js"></script>
+  <script src = "achievement-data.js"></script>
+  <script src = "achievements.js"></script>
+  <script src = "contraption.js"></script>
+</html>

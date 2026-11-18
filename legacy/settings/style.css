@@ -1,0 +1,126 @@
+main {
+  color: var(--text-dark);
+  background: var(--bkgd-light) !important;
+}
+
+#back-to-prev {
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.header {
+  margin: 30px 0 20px 0;
+}
+.setting {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  min-height: 32px;
+  width: 100%;
+  margin-bottom: 10px !important;
+  transition: background 0.5s;
+}
+.dark-theme .checkbox {
+  filter: invert(1);
+}
+.dark-theme .checkbox::selection {
+  filter: invert(1);
+}
+.setting:hover, .setting:focus {
+  background: var(--bkgd-light-lighten);
+}
+.checkbox {
+  height: 32px;
+}
+.setting-name {
+  height: 100%;
+  line-height: 32px;
+  text-align: left;
+}
+#coming-soon {
+  margin-top: 50px;
+}
+
+#show-all {
+  border: 1px solid var(--text-dark);
+  padding: 6px;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+#show-all:hover, #show-all:focus {
+  padding: 5px 6px 7px 6px;
+}
+#show-all:active {
+  padding: 6px;
+}
+#show-all:active > span {
+  opacity: 0.5;
+}
+
+#danger-border {
+  border: 1px solid red;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  margin-top: 50px;
+}
+#reset-data {
+  transition: background 0.5s;
+  display: block;
+  width: 100%;
+  height: 35px;
+}
+#reset-data:hover, #reset-data:focus {
+  background: var(--bkgd-light-lighten);
+  font-weight: 700;
+}
+#reset-data:active {
+  transform: translateY(2px);
+}
+#reset-data:hover > #reset-warning, #reset-data:focus > #reset-warning {
+  text-decoration: underline;
+}
+#reset-data-btn {
+  border: 1px solid red;
+  color: red;
+  padding: 6px;
+  display: inline-block;
+  font-weight: inherit;
+  height: 100%;
+}
+
+#wrapper {
+  position: relative;
+}
+#popup-background {
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.4);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+#data-clear-confirm {
+  z-index: 10000;
+  background: var(--bkgd-light-lighten);
+  border: 1px solid var(--bkgd-dark);
+  text-align: center;
+  border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  padding: 0 35px 30px 35px;
+  width: 50%;
+  height: 60%;
+  min-width: 500px;
+  min-height: 160px;
+  max-width: 800px;
+  max-height: 260px;
+  opacity: 0;
+  pointer-events: none;
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Map Thingy - Tiki</title>
+    <style>
+      html,
+      body,
+      #wrapper {
+        max-height: 100vh;
+        min-height: unset;
+        overflow: hidden;
+      }
+  
+      main {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+  
+      #map {
+        flex-grow: 1;
+        z-index: 0;
+      }
+  
+      #controls {
+        height: 40px;
+        padding: 0 calc(5px + 3vw);
+        display: flex;
+        align-items: center;
+        background: #86888a;
+      }
+  
+      #controls-inner {
+        display: flex;
+        align-items: center;
+      }
+  
+      input[type="range"] {
+        margin: 0 18px 0 4px;
+      }
+  
+      #title {
+        margin-right: 20px;
+      }
+  
+      @media (max-width: 1070px) {
+        #title {
+          display: none;
+        }
+      }
+  
+      @media (max-width: 720px) {
+        #controls {
+          /*           display: unset; */
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 65px;
+        }
+  
+        #title-wrapper {
+          display: block;
+        }
+      }
+    </style>
+    <link rel = "stylesheet" href = "https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity = "sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin = "">
+  </head>
+  
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <div id = "controls">
+          <span id = "controls-inner">
+            <span>
+              Year:
+              <span id = "current-year"></span>
+            </span>
+            <input id = "year" type = "range" value = "1961">
+            <span>
+              Spread:
+              <span id = "current-spread"></span>
+            </span>
+            <input id = "spread" type = "range" value = "5" min = "0" max = "15">
+          </span>
+          <span id = "title-wrapper">
+            <span id = "title">
+              Food and feed consumption by country
+            </span>
+            <span style = "color: blue;">Blue is food</span>,
+            <span style = "color: red;">Red is feed</span>
+          </span>
+        </div>
+        <div id="map"></div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../../", title = "map thingy", footer = false</script>
+  <script src = "../../helper-fns.js"></script>
+  <script src = "../../default-script.js"></script>
+  <script src = "https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity = "sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin = ""></script>
+  <!--   <script src = "//unpkg.com/leaflet-arc/bin/leaflet-arc.min.js"></script> -->
+  <script src = "./script.js"></script>
+</html>

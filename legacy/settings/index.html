@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Tiki</title>
+    <link href = "./style.css" type = "text/css" rel = "stylesheet">
+    <link rel = "preload" as = "image" href = "../icons/checkbox-yes.svg">
+    <link rel = "preload" as = "image" href = "../icons/checkbox-no.svg">
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <section id = "sec1">
+          <a id = "back-to-prev">&lt; back to previous page</a>
+          <div id = "settings-wrapper"></div>
+          <button id = "show-all" class = "button-reset">
+            <span>Show all settings (will reload page)</span>
+          </button>
+          <div id = "danger-border">
+            <button id = "reset-data" class = "button-reset">
+              <div id = "reset-data-btn">Clear all saved data (BETA)</div>
+              — <span id = "reset-warning">this cannot be undone!</span>
+            </button>
+          </div>
+        </section>
+      </main>
+      <div id = "popup-background"></div>
+      <div id = "data-clear-confirm">
+        <div class = "header">Are you <span style = "font-variation-settings: 'wght' 700">sure</span> you want to clear all of your data?</div>
+        All of your saved data from every page on this website will be cleared, <b>irreversibly</b>. This will also reload the page.
+      </div>
+    </div>
+  </body>
+  <script>var path = "../", title = "settings", footer = false</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script src = "./script.js"></script>
+</html>

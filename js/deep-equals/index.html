@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <title>cheese</title>
+    <style>
+      :root {
+        --code: #aec9d9;
+        --keyword: #ee96d4;
+        --punctuation: #eee;
+        --key: #c891fc;
+        --comment: #888;
+        --number: #63e16d;
+        --func-call: #71bdec;
+        --string: #f8a862;
+      }
+      
+      body {
+        margin: 3em 4em;
+        font-family: sans-serif;
+      }
+      
+      main {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      
+      h2 {
+        margin-top: 1.6em;
+      }
+      
+      h3 {
+        font-size: unset;
+        margin-bottom: 0.6em;
+        margin-top: 1.6em;
+      }
+      
+      code {
+        position: relative;
+        padding: 0 2px;
+      }
+      code::before {
+        content: "";
+        display: block;
+        position: absolute;
+        inset: -1px 0;
+        border-radius: 3px;
+        background: #00000018;
+        pointer-events: none;
+      }
+
+      li {
+        margin: 0.6em 0;
+      }
+
+      hr {
+        margin: 4em 0;
+      }
+
+      pre {
+        background: #0000000c;
+        border-left: 5px solid #0002;
+        padding: 0.4em 0.8em;
+        line-height: 1.4;
+        color: var(--code);
+      }
+
+      .punctuation {
+        color: var(--punctuation);
+      }
+      .keyword {
+        color: var(--keyword);
+      }
+      .number {
+        color: var(--number);
+      }
+      .key {
+        color: var(--key);
+      }
+      .func-call {
+        color: var(--func-call);
+      }
+      .string, .string * {
+        color: var(--string);
+      }
+      .comment, .comment * {
+        color: var(--comment) !important;
+        font-style: italic;
+      }
+      
+      .prefer-break {
+        display: inline-block;
+      }
+      
+      #title {
+        margin-bottom: 0.2em;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #262829;
+          color: #eee;
+          color-scheme: dark;
+        }
+        
+        pre {
+          background: #ffffff18;
+          border-left-color: #fff3;
+        }
+      
+        code::before {
+          background: #ffffff18;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id = "title">Deep equals</h1>
+      <i>with infinite recursion</i>
+      <section>
+        <h2><a id = "usage">Usage</a></h2>
+        <p>
+          Download the <a href = "index.min.js" target = "_blank" download = "deep-equals.min.js">minified</a> or <a href = "index.js" target = "_blank" download = "deep-equals.js">unminified</a> source code.
+          There is no CDN.
+          Just download it.
+        </p>
+        <p>
+          Call <code>deepEquals(a, b)</code> with any two values (a and b) to check if they are deeply equal.
+          Values are considered equal if the <code>===</code> operator returns true, or all keys and values match.
+          See <a href = "#comparison-rules">comparison rules</a> for more info.
+        </p>
+      </section>
+      <section>
+        <h2><a id = "examples">Examples</a></h2>
+        <p>
+          The <code>deepEquals</code> function can be used for non-recursive data structures and recursive ones.
+          These examples show a variety of use cases and their expected outputs.
+        </p>
+        <!-- inner text of <pre> tags is trimmed with js -->
+        <h3>Basic deep equality comparison</h3>
+        <i>returns true (object keys are unordered):</i>
+        <pre>
+deepEquals(
+  {a: 1, b: ["some", "strings"]},
+  {b: ["some", "strings"], a: 1}
+)
+        </pre>
+        <i>returns false (array order matters):</i>
+        <pre>
+deepEquals(
+  {a: 1, b: ["some", "strings"]},
+  {a: 1, b: ["strings", "some"]}
+)
+        </pre>
+        <h3>Custom comparison function</h3>
+        <i>returns true (custom comparison function uses loose equality operator):</i>
+        <pre>
+deepEquals(
+  [123, null, null],
+  ["123", null, undefined],
+  (a, b) => a == b
+)
+        </pre>
+        <h3>Infinite recursion</h3>
+        <i>returns true (both objects allow <code>obj.a.b.a.b.a.b...</code> forever):</i>
+        <pre>
+let obj1 = {}, obj2 = {}
+
+obj1.a = {b: obj1}
+obj2.a = {b: {a: {b: obj2}}}
+
+deepEquals(obj1, obj2)
+        </pre>
+        <i>returns false (objects start out the same, but <code>obj2</code> has two <code>b</code>&rsquo;s in a row: <code>obj2.a.b.a.b.b</code>):</i>
+        <pre>
+let obj1 = {}, obj2 = {}
+
+obj1.a = {b: obj1}
+obj2.a = {b: {a: {b: {b: obj2}}}}
+
+deepEquals(obj1, obj2)
+        </pre>
+        <h3>Prototype chain checking</h3>
+        <i>returns false (objects do not have the same prototype chain):</i>
+        <pre>
+deepEquals(
+  {},                 // &lt;empty object&gt; -> Object.prototype -> null
+  Object.create(null) // &lt;empty object&gt; -> null
+)
+        </pre>
+        <i>returns true (prototype chains are identical):</i>
+        <pre>
+// &lt;empty object&gt; -> {a: 5} -> Object.prototype -> null
+deepEquals(
+  Object.create({a: 5}),
+  {__proto__: {a: 5}}
+)
+        </pre>
+      </section>
+      <section>
+        <h2><a id = "comparison-rules">Comparison Rules</a></h2>
+        <p>
+          There are a few steps that are gone through to determine if two values should be considered equal.
+          They are executed in this order:
+        </p>
+        <ol>
+          <li>
+            If the values are equal using the strict equality operator (<code>===</code>), then return <code>true</code>.
+          </li>
+          <li>
+            Otherwise, check which values are primitives. If one is and the other isn&rsquo;t, return <code>false</code>.
+            Keep in mind that two different symbols with the same name will not be considered equal, as that is how the JavaScript strict equality operator treats symbols.
+          </li>
+          <li>
+            If both values are primitives:
+            return the result of the <a href = "#custom-comparison">custom comparison function</a> if it is defined, otherwise <code>false</code>.
+          </li>
+          <li>
+            Otherwise, if one value is a JavaScript set or map and the other isn&rsquo;t, return <code>false</code>.
+            <span class = "prefer-break">(This also applies if one is a set and the other is a map).</span>
+          </li>
+          <li>
+            If both values are maps, then check that both maps have the same keys, and the keys correspond to the same values.
+            Keys are compared using <code>Map.prototype.has("key")</code>, meaning that maps are only considered equal if the keys are <u>strictly equal</u> to each other.*
+            Map values, however, are compared by recursively calling the <code>deepEquals</code> function.
+          </li>
+          <li>
+            If both values are sets, then check that both sets contain the same values.
+            Like map keys, set values are compared using <code>Set.prototype.has(value)</code>, so they must be <u>strictly equal</u>.*
+          </li>
+          <li>
+            If none of the above conditions are met, the values are treated as plain JavaScript objects.
+            Both objects must have the same keys, and the keys must correspond to the same values.
+            Values are compared by recursively calling <code>deepEquals</code>.
+            The prototype of the object is also checked using <code>deepEquals</code>, so two objects that have the same properties but a different prototype chain will not be considered equal (unless the two prototype chains are deeply equal).
+          </li>
+        </ol>
+        <p>
+          Other notes:
+        </p>
+        <ul>
+          <li>
+            Property descriptors such as <code>writable</code> and <code>enumerable</code> are not checked when comparing objects.
+          </li>
+          <li>
+            The keys and values of weak maps and weak sets are not compared.
+            This is because it is not possible to get a list of the keys of a weak map or the values in a weak set.
+          </li>
+          <li>
+            <code>WeakRef</code>s are not de-referenced when they are compared, so two <code>WeakRef</code>s that point to different values will still be considered equal.
+          </li>
+          <li>
+            There are many possible data structures that store data internally that is only accessible through calling methods, which will not be checked by the <code>deepEquals</code> function.
+            Keep in mind that aside from the special handling of maps and sets, values are only checked for equality if they are accessible through <code>Object.keys()</code> or the prototype chain (<code>Object.getPrototypeOf()</code>).
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2><a id = "custom-comparison">Custom Comparison Functions</a></h2>
+        <p>
+          A callback can be provided as the third optional parameter to <code>deepEquals</code>.
+          The callback takes two parameters—the values to check the equality of—and returns the result of the comparison (which is converted to a boolean).
+          This function is only called if the two values are <u>not strictly equal</u> (<code>===</code>), and both values are <u>primitives</u>.
+        </p>
+        <p>
+          Note that because this function runs after the strict equality check, this function can&rsquo;t override comparisons that would normally be considered strictly equal.
+          So, this function can only make pairs of primitives that would normally be not equal considered equal, and not the other way around.
+        </p>
+      </section>
+      <hr>
+      <small>
+        *Map keys and set values are compared using strict equality (via built-in functions) due to performance reasons.
+        To compare map keys or set values using the <code>deepEquals</code> function, it would require checking every possible combination, which would be very slow, especially due to the slow nature of deep equality checking.
+      </small>
+    </main>
+  </body>
+  <script src = "index.min.js"></script>
+<!--  <script src = "test.js"></script>-->
+  <script>
+    // extremely janky code coloring
+    for (let i of document.querySelectorAll("pre")) {
+      let text = i.innerText
+        .trim()
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt")
+        .replaceAll(">", "&gt;")
+
+      text = text.replaceAll(/\w+(?=\()/g, "<span class EQUALS 'func-call'>$&</span>")
+      
+      text = text.replaceAll(/\w+(?=:)/g, "<span class EQUALS 'key'>$&</span>")
+      
+      text = text.replaceAll(/(?<=\.)\w+/g, "<span class EQUALS 'key'>$&</span>")
+      
+      text = text.replaceAll(/[()\[\]{},.:=]|&gt;/g, "<span class EQUALS 'punctuation'>$&</span>")
+      
+      text = text.replaceAll(/\/\/[^\n]+/g, "<span class EQUALS 'comment'>$&</span>")
+      
+      text = text.replaceAll(/\b(let|null|undefined)\b/g, "<span class EQUALS 'keyword'>$&</span>")
+      
+      text = text.replaceAll(/"[^"]*"/g, "<span class EQUALS 'string'>$&</span>")
+      
+      text = text.replaceAll(/\b-?\d+(\.\d+)?\b/g, "<span class EQUALS 'number'>$&</span>")
+      
+      i.innerHTML = text.replaceAll("EQUALS", "=")
+    }
+  </script>
+</html>

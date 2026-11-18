@@ -1,0 +1,66 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#text {
+  text-align: center;
+  transform: translateY(-50%);
+  height: 60px;
+}
+
+.part {
+  position: relative;
+  font-family: Roboto, Arial, sans-serif;
+  font-weight: 800;
+  font-size: 60px;
+  color: var(--text-dark);
+  width: max-content;
+  display: inline-block;
+  white-space: pre;
+}
+.start, .end {
+  display: block;
+}
+.end {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  top: 0;
+}
+
+#beans {
+  width: 100%;
+  height: 160px;
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  transition: transform 0.8s ease-out;
+}
+.bean-img {
+  height: 170px;
+  position: absolute;
+  top: 0;
+}
+#img1 {
+  left: 5px;
+  top: 5px;
+}
+#img2 {
+  left: 170px;
+  top: 30px;
+}
+#img3 {
+  right: 10px;
+  top: 10px;
+}
+
+.mini-bean:first-child {
+  transform: translateY(12px) scaleX(-1);
+}
+.mini-bean {
+  opacity: 0;
+  display: inline-block;
+  height: 100%;
+  transform: translateY(12px);
+}

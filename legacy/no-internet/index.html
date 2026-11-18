@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Failed to open page</title>
+    <style>
+      @font-face {
+        font-family: "SF Pro";
+        src: url("./SF-Pro.ttf");
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "SF Pro";
+        src: url("./SF-Pro-bold.ttf");
+        font-weight: 700;
+        font-style: normal;
+      }
+      
+      html, body { height: 100%; }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        background: rgb(246, 246, 246);
+      }
+      #wrapper {
+        min-width: 320px;
+        margin: 0 auto;
+        width: 50%;
+      }
+      #title, #subtitle {
+        text-align: center;
+        font-family: system-ui, "SF Pro", sans-serif;
+        color: rgb(133, 133, 133);
+      }
+      #title {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 34px;
+      }
+      #subtitle {
+        margin: 13px 0;
+        padding: 0 24px;
+        font-size: 13px;
+        line-height: 18px;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: rgb(30, 30, 30);
+        }
+        #subtitle {
+          color: rgb(110, 110, 110);
+        }
+      }
+
+      #black-overlay {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        background: black;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id = "wrapper">
+      <div id = "title">You Are Not Connected to the Internet</div>
+      <div id = "subtitle">This page can't be displayed because your computer is currently offline.</div>
+    </div>
+    <div id = "black-overlay"></div>
+  </body>
+  <script>
+    (() => {
+      var stage = 0
+  
+      const texts = [
+        ["Are You Not Connected to the Internet?", "This page can't be displayed because your computer may or may not be offline."],
+        ["Vous n'êtes pas connecté à Internet?", "Cette page ne peut pas être affichée car votre ordinateur peut ou non être hors ligne."],
+        ["Thou be'st not with connections to th' divine interwebs.", "This here page be'st unable to presenteth, for thine computing machine lacks interweb connections."],
+        ["Check if you're on the internet.", "I mean interwebs."],
+        ["You are on the internet.", "Click again."]
+      ]
+      
+      document.body.onclick = () => {
+        if (stage >= texts.length) {
+          document.getElementById("black-overlay").style.opacity = "1"
+          
+          setTimeout(() => { location = "./?fade=1s" }, 1000)
+        }
+        
+        document.getElementById("title").innerText = texts[stage][0]
+        document.getElementById("subtitle").innerText = texts[stage][1]
+  
+        stage++
+      }
+  
+      document.getElementById("black-overlay").style.transition = "opacity 1s ease-in"
+
+      history.pushState({}, "", "../")
+    })()
+  </script>
+</html>

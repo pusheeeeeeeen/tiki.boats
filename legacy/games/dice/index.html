@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Dice Game - Tiki</title>
+    <link href = "./style.css" rel = "stylesheet" type = "text/css">
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main class = "dark-theme">
+        <div id = "left-panel">
+          
+        </div>
+        <div id = "canvas-wrapper">
+          <canvas id = "canvas"></canvas>
+          <div id = "game-selection">
+            <div id = "game-selection-darken"></div>
+            <div id = "game-selection-inner" class = "popup">
+              <select id = "game-type"></select>
+              <div class = "separator"></div>
+              <div class = "setting">
+                <input id = "less-random" type = "checkbox" checked>
+                <label for = "less-random">Less random starting numbers</label>
+              </div>
+              <div class = "separator"></div>
+              <button id = "start" class = "basic-btn">Start game</button>
+              <br>
+              <button id = "load-game" class = "basic-btn">Load from save…</button>
+            </div>
+          </div>
+        </div>
+        <div id = "right-panel">
+          <table id = "move-history"></table>
+        </div>
+        <div id = "load-save-wrapper" class = "popup-bg hidden">
+          <div class = "popup">
+            <textarea id = "load-save-input" placeholder = "Paste save code here"></textarea>
+            <div id = "load-save-btns">
+              <button id = "cancel-load-save" class = "basic-btn">Cancel</button>
+              <button id = "load-save" class = "basic-btn">Load</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../../", title = "dice game", footer = false</script>
+  <script src = "../../helper-fns.js"></script>
+  <script src = "../../default-script.js"></script>
+  <script src = "./board.js"></script>
+  <script src = "./tile.js"></script>
+  <script src = "./variants.js"></script>
+  <script src = "./game.js"></script>
+</html>

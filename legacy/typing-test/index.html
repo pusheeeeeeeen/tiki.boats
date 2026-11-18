@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Tiki</title>
+    <link href = "./style.css" type = "text/css" rel = "stylesheet">
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <section>
+          <div id = "inner">
+            <div class = "header">Type the alphabet and hit <i>Enter</i></div>
+            <div id = "input-wrapper">
+              <input id = "input" type = "text">
+              <div id = "input-display">
+                <span id = "typed"></span><span id = "remaining"></span>
+              </div>
+            </div>
+            <div id = "time">
+              <span id = "time-sec"></span><span id = "time-ms"></span>
+            </div>
+            <div id = "time-best-wrapper">
+              Best time:
+              <span id = "time-best"></span>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../", title = "typing test"</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script src = "./script.js"></script>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Game - Tiki</title>
+    <style>
+      html, body, #wrapper {
+        max-height: 100vh;
+        min-height: unset;
+        overflow: hidden;
+      }
+      
+      main {
+        overflow: hidden;
+      }
+      #canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <canvas id = "canvas"></canvas>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../", title = ".boats", footer = false</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script src = "./script.js"></script>
+</html>

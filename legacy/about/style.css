@@ -1,0 +1,40 @@
+#canvas-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+#canvas-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  font-size: 170px;
+  font-family: var(--title-font);
+  color: var(--white);
+  text-shadow: 0 8px 20px var(--black);
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+}
+@media (min-width: 750px) {
+  #canvas-text {
+    letter-spacing: 0.5ch;
+  }
+}
+#canvas-bottom {
+  height: 30px;
+  background: #888;
+  box-shadow: 0 0 100px 10px var(--black);
+}
+#canvas-bottom-inner {
+  opacity: 0.8;
+  background: linear-gradient(to bottom, #505254, var(--bkgd-dark));
+  height: 100%;
+}
+
+#sec1 {
+  background: var(--bkgd-light);
+  position: relative;
+  color: var(--text-dark);
+}

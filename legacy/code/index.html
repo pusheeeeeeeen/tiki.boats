@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Tiki Code Typer</title>
+    <style>
+      @font-face {
+        font-family: code;
+        src: url("./code.ttf");
+      }
+
+      #toolbar {
+        height: 30px;
+        background: var(--bkgd-light);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+        font-size: 15px;
+      }
+      .separator {
+        opacity: 0.5;
+        margin: 0 8px;
+      }
+      #create-ligatures, #remove-ligatures {
+        border: 1px solid #888;
+        border-radius: 3px;
+        padding: 1px 7px;
+      }
+      #create-ligatures:active, #remove-ligatures:active {
+        color: #888;
+      }
+      
+      #editor {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        resize: none;
+        background: transparent;
+        border: none;
+        overflow: scroll;
+        color: var(--text-dark);
+        padding: 16px 24px;
+        margin: 0;
+        font-family: code, Roboto, sans-serif;
+      }
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <div id = "toolbar">
+          <input id = "auto-ligature" type = "checkbox">
+          <label for = "auto-ligature">Automatically create ligatures</label>
+          <div class = "separator">&bull;</div>
+          <button id = "create-ligatures" class = "button-reset">Create ligatures</button>
+          <div class = "separator">&bull;</div>
+          <button id = "remove-ligatures" class = "button-reset">Remove ligatures</button>
+        </div>
+        <textarea id = "editor" spellcheck = "false"></textarea>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../", title = "code typer"</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script>
+    const ligatures = {
+      "th" : "T",
+      "sh" : "S",
+      "ch" : "C",
+      "ee" : "E"
+    }
+
+    const ligatureCheckbox = id("auto-ligature"),
+          editor = id("editor")
+
+    editor.oninput = event => {      
+      if (ligatureCheckbox.checked)
+        updateLigatures()
+    }
+
+    function updateLigatures() {
+      var content = editor.value, count = 0
+      
+      for (let i = 0; i < content.length - 1; i++) {
+        var substr = content.substr(i, 2)
+        
+        if (substr in ligatures) {
+          content = content.slice(0, i) + ligatures[substr] + content.slice(i + 2)
+
+          count++
+        }
+      }
+
+      setEditorContent(content, -count)
+    }
+
+    function removeLigatures() {
+      var content = editor.value,
+          origLen = content.length
+
+      for (let [key, val] of Object.entries(ligatures))
+        content = content.replaceAll(val, key)
+
+      setEditorContent(content, content.length - origLen)
+    }
+
+    function setEditorContent(content, cursorOffset) {
+      var pos = editor.selectionStart + cursorOffset
+
+      editor.value = content
+
+      editor.setSelectionRange(pos, pos)
+    }
+
+    id("create-ligatures").onclick = updateLigatures
+    id("remove-ligatures").onclick = () => {
+      removeLigatures()
+
+      ligatureCheckbox.checked = false
+    }
+  </script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <title>Tibliobeca Client</title>
+    <link rel = "stylesheet" href = "style.css">
+  </head>
+  <body>
+    <div id = "editor">
+      <div id = "editor-header">
+        <div>Editing document <b id = "doc-id"></b></div>
+        <div id = "edited">(edited)</div>
+        <div style = "flex-grow: 1;"></div>
+        <button id = "close-editor">X</button>
+      </div>
+      <div id = "document-deleted" class = "editor-notif">
+        This document has been <b>deleted</b> since the last data refresh.
+        Saving this document will restore it.
+      </div>
+      <div id = "document-modified" class = "editor-notif">
+        This document has been <b>modified</b> since the last data refresh.
+        Showing the updated version.
+      </div>
+      <div id = "document-desync" class = "editor-notif">
+        This document is not the same on the client and server.
+        Use "replace with server copy" to keep the server version, or "save" to keep the client version.
+      </div>
+      <textarea id = "document-name"></textarea>
+      <div id = "main-editor">
+        <textarea id = "document-content"></textarea>
+        <iframe id = "editor-preview" sandbox = "allow-same-origin"></iframe>
+      </div>
+      <label for = "allow-deletion">allow deletion:</label>
+      <input id = "allow-deletion" type = "checkbox" checked>
+      <br>
+      <label for = "editor-version">editor version:</label>
+      <select id = "editor-version">
+        <option value = "">tinymce (current)</option>
+        <option value = "test">quill test</option>
+        <option value = "document_1.0">legacy (broken)</option>
+      </select>
+      <hr>
+      <div id = "editor-actions">
+        <button id = "save">save</button>
+        <div style = "flex-grow: 1;"></div>
+        <button id = "replace">replace with server copy</button>
+        <button id = "delete">delete</button>
+      </div>
+    </div>
+    <input id = "search" type = "search" placeholder = "search documents...">
+    <button id = "new">new document</button>
+    <table id = "document-list">
+      <tbody id = "document-list-inner"></tbody>
+    </table>
+    <div id = "loading">
+      loading...
+    </div>
+  </body>
+  <script src = "https://cdnjs.cloudflare.com/ajax/libs/sanitize-html/1.19.3/sanitize-html.min.js" integrity = "sha512-3i3h2SK60Xw3xjxWpgeyUg4g9diAsVcAjV4IiQoPenDXDfFNbYfr8T0e8myUveBYSodS/VT+ADjLG9cLmzjSfw==" crossorigin = "anonymous" referrerpolicy = "no-referrer"></script>
+  <script src = "helpers.js"></script>
+  <script src = "firebase-config.js"></script>
+  <script src = "firebase.js" type = "module"></script>
+  <script src = "main.js"></script>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <script src = "../default-script.js"></script>
+    <link href = "../default-styles.css" rel = "stylesheet" type = "text/css">
+    <link href = "../page-styles.css" rel = "stylesheet" type = "text/css">
+    <link rel = "preload" href = "../fonts/roboto.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-italic.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold-italic.ttf" as = "font" type = "font/ttf">
+    <link href = "style.css" rel = "stylesheet" type = "text/css">
+  </head>
+  <body>
+    <main>
+      
+      <!-- TITLE -->
+      <section>
+        <h1>Tiki Testing™</h1>
+        Use at your own risk<br>
+        <small style = "opacity: 0.7;">(the risk is most likely quite low)</small>
+      </section>
+      
+      <!-- NAVIGATION -->
+      <section>
+        <button id = "hamburger-toggle" class = "link">
+          Toggle hamburger menu
+        </button>
+        <button id = "nav-toggle" class = "link">
+          Toggle navbar
+        </button>
+        <button id = "hamburger-button-toggle" class = "link">
+          Toggle hamburger button
+        </button>
+      </section>
+
+      <!-- OVERLAY WINDOWS -->
+      <section>
+        <button id = "create-ow" class = "link no-padding">
+          Create overlay window
+        </button>
+        for
+        <label for = "ow-page">page:</label>
+        <select id = "ow-page"></select>
+        <br><br>
+        <button id = "close-all-ow" class = "link">
+          Close all overlay windows
+        </button>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section>
+        <label for = "notif-text">Notification content:</label>
+        <br>
+        <textarea id = "notif-text"></textarea>
+        <br>
+        <label for = "notif-use-html">Use HTML:</label>
+        <input type = "checkbox" id = "notif-use-html">
+        <label for = "notif-x">Show X:</label>
+        <input type = "checkbox" id = "notif-x" checked>
+        <label for = "notif-type">Type:</label>
+        <select id = "notif-type">
+          <option value = "short">Short</option>
+          <option value = "long">Long</option>
+          <option value = "persistent">Persistent</option>
+        </select>
+        <br>
+        <button id = "notify" class = "link">
+          Create notification
+        </button>
+        <br><br>
+        <button id = "clear-notifs" class = "link">
+          Clear all notifications
+        </button>
+        <button id = "force-clear-notifs" class = "link">
+          Force clear all notifications
+        </button>
+      </section>
+      <section>
+        <h3>Contains “spoilers”:</h3>
+        <button id = "easter-egg-notif" class = "link">
+          Show easter egg notification
+        </button>
+      </section>
+    </main>
+  </body>
+  <script src = "../helpers.js"></script>
+  <script src = "../pages.js"></script>
+  <script src = "script.js"></script>
+</html>

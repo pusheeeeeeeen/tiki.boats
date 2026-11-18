@@ -1,0 +1,238 @@
+main {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-dark);
+  position: relative;
+}
+
+#controls {
+  height: max-content;
+  background: var(--bkgd-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px 60px;
+  position: sticky;
+  top: 55px;
+  z-index: 1;
+}
+#loc-select {
+  margin: 0;
+}
+#use-compact-wrapper {
+  position: relative;
+  margin-left: 20px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+#use-compact-wrapper::before, #view-map::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-dark);
+  opacity: 0.4;
+}
+#use-compact {
+  margin: 0 5px 0 0;
+}
+#view-map {
+  text-decoration: underline;
+  color: inherit;
+  font-size: 14px;
+  position: relative;
+  margin-left: 20px;
+}
+#view-map:active {
+  opacity: 0.8;
+}
+#main-page {
+  flex-grow: 1;
+  background: var(--bkgd-mid);
+  padding: 40px 60px;
+}
+
+#header {
+  color: var(--green);
+  font-size: 40px;
+  font-weight: 700;
+  font-family: var(--title-font);
+  letter-spacing: 0.02em;
+}
+#subtitle {
+  color: var(--text-accent);
+  opacity: 0.8;
+  font-style: italic;
+  font-size: 18px;
+  position: relative;
+  display: inline-block;
+  padding: 0 0 5px 10px;
+  margin: 0 10px 16px 0;
+}
+#subtitle::after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: calc(100% + 50px);
+  min-width: 200px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: var(--text-dark);
+  opacity: 0.5;
+}
+
+#data {
+  margin-left: -60px;
+}
+
+#data.compact-layout .bird-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+#data.compact-layout .place-name {
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+
+#data.compact-layout .bird-name {
+  font-size: 14px;
+}
+#data.compact-layout .bird-pos {
+  font-size: 12px;
+}
+
+.bird-wrapper {
+  margin-bottom: 12px;
+  margin-left: 25px;
+  padding: 6px;
+  position: relative;
+}
+.true-bird-wrapper {
+  overflow: hidden;
+  border-radius: 7px;
+}
+.rainy-bird > .bird-name {
+  border-color: var(--blue);
+}
+.true-bird-wrapper._selected {
+  overflow: visible;
+}
+.bird-wrapper._selected::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 7px;
+  border: 1px solid var(--text-dark);
+  opacity: 0.1;
+}
+.place-name {
+  color: var(--text-accent);
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.place-name:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+.bird-count {
+  font-style: italic;
+  font-size: 18px;
+  padding-left: 12px;
+  font-weight: normal;
+}
+.bird-name {
+  font-size: 18px;
+  background: var(--bkgd-light-darken);
+  padding: 3px 5px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: inline-block;
+}
+.bird-pos {
+  font-size: 15px;
+  font-style: italic;
+  opacity: 0.7;
+}
+.rarity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 8px 1px 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+.rarity-dot-red {
+  background: #eb2a37;
+}
+.rarity-dot-orange {
+  background: linear-gradient(to bottom, transparent 50%, #ed6c21 50%);
+  border: 2px solid #ed6c21;
+}
+.bird-info-wrapper {
+  position: absolute;
+  bottom: 100%;
+  right: 10px;
+  padding-bottom: 7px;
+}
+.bird-info {
+  position: relative;
+  height: 100%;
+  font-size: 14px;
+  background: var(--bkgd-light);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 10px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+}
+.bird-info-separator {
+  width: calc(100% - 20px);
+  height: 1px;
+  margin: 4px 0;
+  background: var(--text-dark);
+  opacity: 0.2;
+}
+.bird-info-red {
+  border: 1px solid #eb2a37;
+}
+.bird-info-orange {
+  border: 1px solid #ed6c21;
+}
+.bird-info-red, .bird-info-orange {
+  padding: 9px;
+}
+.bird-info-red::before {
+  color: #eb2a37;
+  content: "RARE";
+}
+.bird-info-orange::before {
+  color: #ed6c21;
+  content: "UNUSUAL";
+}
+.bird-info-red::before, .bird-info-orange::before {
+  display: block;
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.line {
+  white-space: pre-wrap;
+  display: inline-block;
+}
+.other-locations:not(:active), .other-birds:not(:active), .view-rainy:not(:active) {
+  text-decoration: underline;
+  font-style: italic;
+}

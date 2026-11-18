@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Bird Map - Tiki</title>
+    <style>
+      html, body, #wrapper {
+        max-height: 100vh;
+        min-height: unset;
+        overflow: hidden;
+      }
+      
+      main {
+        overflow: hidden;
+      }
+      #canvas {
+        display: block;
+      }
+      #bird-list-wrapper {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        padding: 2px 8px;
+        background: var(--blue);
+        border-radius: 5px;
+      }
+      #bird-list {
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--text-dark);
+/*         text-shadow: 0 1px 6px var(--bkgd-dark); */
+        display: block;
+/*         z-index: 10; */
+      }
+/*       #bird-list-wrapper::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: var(--blue);
+        border-radius: 5px;
+        opacity: 0.3;
+        pointer-events: none;
+      } */
+    </style>
+  </head>
+  <body class = "light-theme">
+    <div id = "wrapper">
+      <main>
+        <canvas id = "canvas"></canvas>
+        <div id = "bird-list-wrapper">
+          <a id = "bird-list" href = "../">View bird list</a>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script>var path = "../../", title = ".boats", footer = false</script>
+  <script src = "../../helper-fns.js"></script>
+  <script src = "../../default-script.js"></script>
+  <script src = "./script.js"></script>
+  <script src = "./data.js"></script>
+</html>

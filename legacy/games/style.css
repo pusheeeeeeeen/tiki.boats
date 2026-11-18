@@ -1,0 +1,142 @@
+main {
+  color: var(--text-dark);
+}
+
+#sec1 {
+  height: 300px;
+  display: flex;
+  padding-left: 0;
+  padding-right: 0;
+}
+#title {
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+#title > span {
+  font-size: 70px;
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(var(--blue-light), var(--green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+/*   text-shadow: 0 -4px rgba(255, 255, 255, 0.1); */
+}
+.fish-img-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fish-img {
+  height: 110px;
+  position: relative;
+  animation: fish-float 4s linear infinite;
+}
+.fish-img-container:first-child {
+  transform: scaleX(-1);
+}
+.fish-img-container:first-child > .fish-img {
+  animation-name: fish-float-invert;
+}
+@keyframes fish-float {
+  0% { bottom: 0; }
+  50% { bottom: 10px; }
+  100% { bottom: 0; }
+}
+@keyframes fish-float-invert {
+  0% { bottom: 10px; }
+  50% { bottom: 0; }
+  100% { bottom: 10px; }
+}
+
+#sec2 {
+  background: var(--bkgd-light);
+}
+.game {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 300px;
+  border-radius: 40px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+  margin-top: 20px;
+  position: relative;
+  text-decoration: none !important;
+  color: var(--text) !important;
+  transition: transform 0.6s, box-shadow 0.6s;
+}
+.game > * {
+  position: absolute;
+}
+.game:hover, .game:focus {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 15px 15px rgba(0, 0, 0, 0.1);
+}
+body.dark-theme #sec3 > .game:hover, body.dark-theme #sec3 > .game:focus {
+  box-shadow: 0 10px 15px 5px rgba(0, 0, 0, 0.3);
+}
+.game-title {
+  font-size: 70px;
+  font-weight: 500;
+  font-family: var(--title-font);
+  letter-spacing: 0.02em;
+  text-shadow: 0 4px 6px black;
+  transition: text-shadow 0.4s;
+}
+.game:hover > .game-title, .game:focus > .game-title {
+  text-shadow: 0 2px 8px white, 0 4px 6px black;
+}
+.game-title::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: -14px;
+  bottom: 0;
+  left: -14px;
+  border: 1px solid;
+  border-color: rgba(255, 255, 255, 0);
+  border-radius: 12px;
+  transition: border-color 0.8s;
+}
+.game:focus > .game-title::before {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.game-img-darken {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(170deg, #444, black 40%);
+  opacity: 0.4;
+  transition: opacity 1s;
+  border-radius: 40px;
+}
+.game:hover > #platformer-img-darken, .game:focus > #platformer-img-darken {
+  opacity: 0.25;
+}
+
+.game-img:not(#dice-img) {
+  max-height: 100%;
+  max-width: 100%;
+}
+#dice-img {
+  width: 0;
+  min-width: 40%;
+  min-height: 100%;
+  transform: rotate(3deg);
+}
+
+#game-platformer {
+  background: #404244;
+}
+
+#game-dice {
+  background: #101214;
+}
+
+#game-bananagrams {
+  background: #888a8c;
+}

@@ -1,0 +1,33 @@
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+}
+#number {
+  font-size: 50px;
+  font-weight: bold;
+}
+#target {
+  font-size: 20px;
+  opacity: 0.5;
+}
+
+#link {
+  position: fixed;
+  bottom: -20px;
+  left: 20px;
+  color: var(--text-link);
+  transition: bottom 1s ease-out;
+  z-index: 100;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+}
+#link:hover {
+  text-decoration: underline;
+}
+
+@keyframes flash {
+  0% { text-shadow: 0 0 8px var(--text-dark), 0 0 30px var(--text-dark), 0 0 150px var(--text-dark); }
+  100% { text-shadow: none; }
+}

