@@ -84,6 +84,9 @@ class Game {
     this.stats.coins ||= 0
     this.stats.totalCoins ||= this.stats.coins
 
+    this.stats.cogs ||= 0
+    this.stats.totalCogs ||= this.stats.cogs
+
     this.stats.timePlayed ||= 0
     this.stats.created ||= Date.now()
   }
@@ -311,18 +314,15 @@ class Game {
         this.level?.jump()
       else if (i === "KeyR" && this.levelFocused) {
         this.reset()
-        
         this.stats.totalResets++
-      } else if (i === "KeyM")
-        id("mute").click()
-      else if (i === "Escape" && showingPauseButton)
+      } else if (i === "Escape" && showingPauseButton)
         id("pause-button").click()
 
     this.keysPressed = []
     
     this.level?.tick()
 
-    this.uiStack.forEach(x => { x?.tick() })
+    this.uiStack.forEach(x => x?.tick())
 
     this.uiStack = this.uiStack.filter(Boolean)
 
@@ -331,7 +331,6 @@ class Game {
 
       if (this.fadingUI.opacity <= 0) {
         this.fadingUI.opacity = 0
-
         this.fadingUI = null
       }
     }
@@ -341,7 +340,6 @@ class Game {
 
       if (this.fadingInUI.opacity >= 1) {
         this.fadingInUI.opacity = 1
-
         this.fadingInUI = null
       }
     }
@@ -352,17 +350,20 @@ class Game {
   }
 
   draw() {
+    // console.time("frame")
+    
     nextFramebuffer()
     
     this.level?.draw()
     
     this.uiStack[this.uiStack.length - 1]?.draw()
-
     this.fadingUI?.draw()
 
     drawToCanvas()
-    
     removeAlpha()
+
+    // gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4))
+    // console.timeEnd("frame")
   }
 }
 
@@ -386,9 +387,23 @@ function resized() {
 
 let game
 
+let lastTickTime, msPerTick = 1000 / 60
+
 function frame() {
-  game.tick()
+  // console.time()
+  let frameTime = performance.now()
+  if (!lastTickTime || frameTime - lastTickTime >= 200) {
+    lastTickTime = frameTime - msPerTick
+  }
+  while (frameTime - lastTickTime > msPerTick - 3) {
+    game.tick()
+    lastTickTime += msPerTick
+  }
   game.draw()
+  // gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4))
+  // console.timeEnd()
+
+  requestAnimationFrame(frame)
 }
 
 ////////////////////////////////
@@ -411,6 +426,7 @@ const imageURLs = [
   "chain",
   "pipe",
   "coin",
+  "cog",
   // player
   "player-default",
   "player-rainbow",
@@ -485,8 +501,6 @@ function itemLoaded() {
       resized()
       game.draw()
     }
-  
-    setInterval(frame, 1000 / 60)
 
     onmousemove = e => {
       game.mousemove(e.pageX, e.pageY)
@@ -530,11 +544,9 @@ onload = () => {
   id("info").style.transition = "opacity 0.5s linear"
 
   loadImages()
-
   itemLoaded()
 }
 
-// onpageshow?
 window.onPageShown = () => {
   itemLoaded()
 }

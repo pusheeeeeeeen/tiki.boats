@@ -9,11 +9,13 @@
   background: #17577a;
 }
 #logo-text {
+  position: relative;
+  z-index: 10;
   pointer-events: none;
   font-size: 30vmin;
   font-weight: bold;
   letter-spacing: 0.03em;
-  rotate: -5deg;
+  transform: rotate(-5deg);
 }
 #fish-canvas {
   position: absolute;
@@ -24,8 +26,23 @@
   cursor: grab;
 }
 
+#spear {
+  pointer-events: none;
+  height: 12px;
+  transform-origin: 6px 6px;
+  position: absolute;
+}
+
+#red-vignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(transparent 40%, 80%, #f028);
+  z-index: 20;
+}
+
 #placeholder {
-  background: repeating-linear-gradient(to bottom right, var(--page-bg) 0, var(--page-bg) 150px, var(--blue-dark) 150px, var(--blue-dark) 300px);
+  background: repeating-linear-gradient(to bottom right, var(--page-bg) 0 150px, var(--blue-dark) 150px 300px);
   margin: 0;
   height: 100vh;
   padding-top: 40vh;

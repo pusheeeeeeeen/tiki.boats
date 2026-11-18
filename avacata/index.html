@@ -1,0 +1,76 @@
+<html lang = "en">
+  <head>
+    <meta charset = "UTF-8">
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 24px 32px;
+      }
+
+      button, summary, a {
+        cursor: pointer;
+      }
+
+      hr {
+        border: none;
+        background: #0004;
+        height: 1px;
+      }
+
+      summary {
+        font-size: 20px;
+        font-weight: bold;
+        list-style: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      details > summary::before {
+        content: "+ ";
+        display: inline-block;
+        width: 20px;
+      }
+      details[open] > summary::before {
+        content: "– ";
+      }
+
+      .out {
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <details open>
+      <summary>Characters</summary>
+      <table id = "characters">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Bold</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </details>
+    <hr>
+    <details open>
+      <summary>Dialog</summary>
+      <button id = "new-dialog">+ New dialog</button>
+      <br><br>
+      Current dialog ID: <select id = "dialog-select"></select><br>
+      <button id = "change-dialog-id">Change dialog ID</button>
+      <br><br>
+      Dialog content:<br>
+      <ol id = "dialog-lines"></ol>
+      <br><br>
+      Output: <button class = "copy">Copy</button>
+      <pre class = "out"></pre>
+    </details>
+  </body>
+  <script src = "../helpers.js"></script>
+  <script src = "script.js"></script>
+  <script src = "character.js"></script>
+  <script src = "dialog.js"></script>
+</html>

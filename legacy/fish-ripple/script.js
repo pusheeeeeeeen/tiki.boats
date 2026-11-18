@@ -135,7 +135,7 @@ function updateCanvasSize() {
 }
 
 let image = new Image()
-image.src = "./tiki-fish.png"
+image.src = "../assets/tiki-fish.png"
 
 image.onload = () => {
   let texCoordBuffer = gl.createBuffer()
@@ -169,7 +169,7 @@ image.onload = () => {
     image
   )
 
-  canvas.style.opacity = 1
+  id("canvas").style.opacity = 1
 
   pageLoaded()
 }

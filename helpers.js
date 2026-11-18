@@ -5,6 +5,7 @@ function classAll(className) { return [...document.getElementsByClassName(classN
 
 function query(query) { return document.querySelector(query) }
 function queryAll(query) { return [...document.querySelectorAll(query)] }
+function queryLast(query) { return queryAll(query).pop() || null }
 
 function createElem(str) {
   let parts = [...str.matchAll(/[#.]?[^#.]+/g)].map(x => x[0])
@@ -34,11 +35,40 @@ function randomItem(arr) {
   return arr[Math.trunc(Math.random() * arr.length)]
 }
 
+function shuffleInPlace(array) {
+  for (let i = array.length - 1; i >= 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+}
+
+// remove non-numerical characters from an input while keeping the selection in the correct place
+function enforceNumericalInput(input, maxLength = null) {
+  let start = input.selectionStart,
+      end = input.selectionEnd
+
+  let oldParts = [
+    input.value.slice(0, start),
+    input.value.slice(start, end),
+    input.value.slice(end)
+  ]
+
+  let newParts = oldParts.map(x => x.replaceAll(/\D/g, ""))
+  
+  let newValue = newParts.join("")
+  input.value = maxLength ? newValue.slice(0, maxLength) : newValue
+
+  input.selectionStart = start - start + newParts[0].length
+  input.selectionEnd = start - end + newParts[0].length + newParts[1].length
+}
+
 function escapeHTML(str) {
   return str
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
+    .replaceAll("\"", "&quot;")
+    .replaceAll("'", "&apos;")
 }
 
 function setIcon(elem, icon) {
@@ -51,7 +81,6 @@ function setIcon(elem, icon) {
 }
 
 function getTextWidth(text, font) {
-  // re-use canvas object for better performance
   let canvas = getTextWidth.canvas ||= createElem("canvas"),
       ctx = canvas.getContext("2d")
   

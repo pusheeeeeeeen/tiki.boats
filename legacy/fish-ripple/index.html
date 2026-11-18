@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset = "UTF-8">
+    <link rel = "icon" href = "../assets/tiki-icon.png">
+    <meta name = "viewport" content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
     <title>Tiki FishRipple™</title>
     <style>
       html, body, #wrapper {
@@ -9,17 +12,15 @@
         min-height: unset;
         overflow: hidden;
       }
-
+      
       main {
         overflow: hidden;
       }
-
       #canvas-wrapper {
         position: absolute;
         inset: 0;
         background: white;
       }
-
       #canvas {
         display: block;
         width: 100%;
@@ -29,14 +30,17 @@
       }
     </style>
   </head>
-  <body class="light-theme">
-    <div id="wrapper">
+  <body class = "light-theme">
+    <div id = "wrapper">
       <main>
-        <div id="canvas-wrapper">
-          <canvas id="canvas"></canvas>
+        <div id = "canvas-wrapper">
+          <canvas id = "canvas"></canvas>
         </div>
       </main>
     </div>
   </body>
-  <script src="./script.js"></script>
+  <script>var path = "../", title = "f i s h r i p p l e", footer = false</script>
+  <script src = "../helper-fns.js"></script>
+  <script src = "../default-script.js"></script>
+  <script src = "./script.js"></script>
 </html>

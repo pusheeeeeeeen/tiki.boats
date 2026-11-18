@@ -17,12 +17,16 @@ function loadImage(src) {
 
 async function loadPuzzle(src, w, h) {
   puzzle = new Puzzle(
-    await loadImage(src),
+    await loadImage(src).catch(() => imgError(src)),
     w, h,
     randomConnections(w, h)
   )
 
   console.log(`Puzzle loaded! ${src}`)
+}
+
+function imgError(src) {
+  parent.notification?.(`Failed to load image '${escapeHTML(src)}'.`)
 }
 
 function randomConnections(w, h) {
@@ -109,5 +113,9 @@ onwheel = e => {
 }
 
 onload = () => {
-  loadPuzzle("images/oedipus.png", 5, 5)
+  let params = new URLSearchParams(location.search)
+  let img = params.get("img") || "images/bab.png"
+  let w = parseInt(params.get("w") || "5")
+  let h = parseInt(params.get("h") || "5")
+  loadPuzzle(img, w, h)
 }

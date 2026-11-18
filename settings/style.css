@@ -1,3 +1,16 @@
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+#settings > .category:first-child > h1 {
+  margin-top: 0 !important;
+}
+#settings > .category:last-child,
+#settings > .category:last-child > .setting:last-child {
+  margin-bottom: 0 !important;
+}
+
 .category {
   margin-bottom: 40px;
 }
@@ -36,4 +49,21 @@ select {
 .checkbox icon {
   width: 100%;
   --size: 110%;
+}
+
+#exp-section {
+  font-size: 20px;
+  font-family: var(--exp-font);
+  font-weight: bold;
+}
+#exp-section.shown {
+  display: block !important;
+  animation: exp-show 2s var(--ease-out);
+}
+
+@keyframes exp-show {
+  0%, 30% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }

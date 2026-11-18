@@ -38,11 +38,8 @@ function showButterbar() {
   setPageTitle("Butterbar loaded!")
 
   let loaded = parseInt(atob(localStorage.getItem("butterbarsLoaded")), 36)
-
-  if (!loaded || Number.isNaN(loaded))
-    loaded = 1
-  else
-    loaded++
+  if (isNaN(loaded) || loaded < 0) loaded = 0
+  loaded++
 
   localStorage.setItem("butterbarsLoaded", btoa(loaded.toString(36)))
 
@@ -50,4 +47,12 @@ function showButterbar() {
     id("count").innerText = loaded
     id("butterbars-loaded").style.animation = "butterbar-loaded 4s ease"
   }
+
+  // let pos = id("butterbar").getBoundingClientRect()
+  // let dist = Math.min(innerWidth * 0.95, innerHeight * 0.95, 380)
+  // exp(
+  //   Math.floor(Math.random() * 3) + 5,
+  //   pos.left + pos.width / 2 + (Math.random() - 0.5) * dist,
+  //   pos.top + pos.height / 2 + (Math.random() - 0.5) * dist
+  // )
 }

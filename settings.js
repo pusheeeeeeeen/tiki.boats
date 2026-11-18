@@ -30,6 +30,13 @@ const settings = {
     }
   },
   // MISC
+  highGraphics : {
+    name : "High quality graphics",
+    desc : "Render the homepage background at a higher quality",
+    type : "boolean",
+    category : "misc",
+    default : "yes"
+  },
   preloading : {
     name : "Preload links on hover",
     desc : "When you hover over a link, the page is loaded in the background",

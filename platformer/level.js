@@ -178,12 +178,12 @@ class Level {
         dy = Math.sin(angle) * 4
     
     this.doubleJumpEffect = {
-      x1 : x - dx,
-      y1 : y - dy,
-      x2 : x + dx,
-      y2 : y + dy,
-      strength : strength,
-      time : 0,
+      x1: x - dx,
+      y1: y - dy,
+      x2: x + dx,
+      y2: y + dy,
+      time: 0,
+      strength,
       dx,
       dy,
       xVel,
@@ -203,13 +203,12 @@ class Level {
     
     if (game.uiStack.length && game.topUI?.type !== "death") return
     
-    if (this.fallDeathDelayRemaining !== 0) {
+    if (this.fallDeathDelayRemaining) {
       if (--this.fallDeathDelayRemaining <= 0) {
-        if (this.screenPosY(this.player.y) < height)
+        if (this.screenPosY(this.player.y) < height) {
           this.fallDeathDelayRemaining = -1
-        else {
-          if (sfx)
-            fallDeathSound.play()
+        } else {
+          if (sfx) fallDeathSound.play()
           
           this.deathIntensity = 0.7
           this.deathMenuDelayRemaining = this.deathMenuDelay
@@ -350,8 +349,7 @@ class Level {
 
     this.coins.forEach(x => x.draw())
 
-    let {doubleJumpEffect : doubleJump} = this
-
+    let doubleJump = this.doubleJumpEffect
     if (doubleJump)
       doubleJumpEffect(
         ...this.screenPos(doubleJump.x1, doubleJump.y1),

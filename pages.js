@@ -52,13 +52,11 @@ const pages = {
   puzzle : {
     name : "Puzzle",
     title : "Tiki Puzzle",
-    info : "multiplayer coming soon (maybe)",
-    wip : true
+    info : "multiplayer coming soon (maybe)"
   },
   colorle : {
     name : "Colorle",
-    info : "Wordle but colors",
-    wip : true
+    info : "Wordle but colors"
   },
   "wrodle-bot" : {
     name : "Wrodle Bot",
@@ -67,6 +65,11 @@ const pages = {
   keyboard : {
     name : "Keyboard",
     info : "use your computer keyboard as a musical keyboard",
+    wip : true
+  },
+  bingo : {
+    name : "Bingo",
+    info : "create a custom bingo board",
     wip : true
   },
   "olw-answers" : {
@@ -97,6 +100,16 @@ const pages = {
     title : "Gradient",
     info : "only works in safari, with a trackpad"
   },
+  shop : {
+    name : "Tiki Shop",
+    hide : true
+  },
+  tonsky : {
+    name : "YELLOW",
+    info : "Prepare your eyes to view tonsky.me",
+    nav : "none",
+    hide : true
+  },
   lunch : {
     name : "Lunch picker",
     title : "Tiki lunch picker",
@@ -106,6 +119,11 @@ const pages = {
   testing : {
     name : "Tiki Testing",
     hide : true
+  },
+  blank : {
+    name : "Blank",
+    hide : true,
+    nav : "none"
   }
 }
 

@@ -14,11 +14,24 @@ let intro = new Howl({
 })
 let song = new Howl({
   src : ["./assets/audio/ideas.wav"],
-  volume :  musicVolume,
+  volume : musicVolume,
   loop : true
 })
 let achievementSong = new Howl({
   src : ["./assets/audio/what-have-you-achieved.wav"],
+  volume : musicVolume,
+  loop : true
+})
+let contraptionSong = new Howl({
+  src : ["./assets/audio/trap-your-contemplation-intro.wav"],
+  volume : musicVolume
+})
+contraptionSong.on("end", () => {
+  contraptionSongMain.play()
+})
+
+let contraptionSongMain = new Howl({
+  src : ["./assets/audio/trap-your-contemplation.wav"],
   volume : musicVolume,
   loop : true
 })
@@ -33,8 +46,7 @@ let sfx = localStorage.getItem("platformer2Sfx") !== "false",
     music = localStorage.getItem("platformer2Music") !== "false"
 
 function playSong(song) {
-  if (music)
-    song.play()
+  if (music) song.play()
 }
 function pauseSong(song) {
   song.pause()

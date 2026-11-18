@@ -7,7 +7,6 @@ shaderSetups.push(() => {
       color2 = [...color2, 255]
   
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -16,21 +15,6 @@ shaderSetups.push(() => {
     gl.uniform4f(locations.u_c2, ...color2)
 
     gl.uniform1f(locations.u_opacity, options.opacity ?? 1)
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        0, 0,
-        1, 0,
-        0, 1,
-        1, 1,
-        0, 1,
-        1, 0
-      ]),
-      gl.STATIC_DRAW
-    )
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
   }
@@ -85,14 +69,26 @@ shaderSetups.push(() => {
     u_opacity : gl.getUniformLocation(program, "u_opacity")
   }
 
-  let positionBuffer = gl.createBuffer(),
-      colorBuffer = gl.createBuffer()
+  let positionBuffer = gl.createBuffer()
 
   let vao = gl.createVertexArray()
 
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      0, 0,
+      1, 0,
+      0, 1,
+      1, 1,
+      0, 1,
+      1, 0
+    ]),
+    gl.STATIC_DRAW
+  )
   
   gl.enableVertexAttribArray(locations.a_position)
 

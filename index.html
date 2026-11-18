@@ -11,6 +11,8 @@
     <link id = "favicon" href = "favicon.png" rel = "icon">
     <script src = "helpers.js" defer></script>
     <script src = "pages.js" defer></script>
+    <script src = "item-data.js" defer></script>
+    <script src = "exp.js" defer></script>
     <script src = "script.js" defer></script>
     <script src = "settings.js" defer></script>
     <script src = "commands.js" defer></script>
@@ -71,17 +73,26 @@
           
           <div class = "hamburger-separator"></div>
           
-          <div class = "hamburger-item">
+          <div class = "hamburger-item" style = "--color: var(--green-light);">
             <a data-page = "games">Games</a>
           </div>
-          <div class = "hamburger-item">
+          <div class = "hamburger-item" style = "--color: var(--green-light);">
             <a data-page = "platformer">Tiki Platformer 2.0</a>
           </div>
-          <div class = "hamburger-item">
+          <div class = "hamburger-item" style = "--color: var(--green-light);">
             <a data-page = "tetris">Tiki Tetris</a>
           </div>
-          <div class = "hamburger-item">
+          <div class = "hamburger-item" style = "--color: var(--green-light);">
             <a data-page = "hex-chess">Hexagonal Chess</a>
+          </div>
+
+          <div id = "exp-hamburger-section" style = "display: none;">
+            <div class = "hamburger-separator"></div>
+            <div class = "hamburger-item" style = "--color: linear-gradient(to right, hsl(var(--hue, 300deg) 70% 70%) 10%, 25%, var(--exp-color) 50%);">
+              <a data-page = "shop">
+                <div class = "exp">Shop</div>
+              </a>
+            </div>
           </div>
           
         </div>
@@ -102,6 +113,14 @@
     <!-- overlay windows -->
     <div id = "overlay-windows"></div>
 
+    <!-- items -->
+    <div id = "items-wrapper">
+      <button id = "items-toggle" class = "icon-hover-wrapper">
+        <icon id = "items-toggle-icon" image = "arrow-down"></icon>
+      </button>
+      <div id = "items-container"></div>
+    </div>
+
     <!-- notifications -->
     <div id = "notification-container">
       <div id = "notifications"></div>
@@ -112,6 +131,9 @@
         <button id = "clear-notifications" class = "reset">clear all</button>
       </div>
     </div>
+
+    <!-- action text -->
+    <div id = "action-text-wrapper"></div>
 
     <!-- command input -->
     <div id = "command-wrapper">

@@ -3,7 +3,6 @@ shaderSetups.push(() => {
     nextFramebuffer()
 
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -18,24 +17,9 @@ shaderSetups.push(() => {
     gl.uniform2f(locations.u_waveAngle, Math.cos(angle), Math.sin(angle))
 
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-         1,  1,
-        -1,  1,
-         1, -1
-      ]),
-      gl.STATIC_DRAW
-    )
 
     gl.activeTexture(gl.TEXTURE0)
-
     gl.bindTexture(gl.TEXTURE_2D, fbTexture)
-
     gl.uniform1i(locations.u_image, 0)
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -120,6 +104,19 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1, -1,
+       1, -1,
+      -1,  1,
+       1,  1,
+      -1,  1,
+       1, -1
+    ]),
+    gl.STATIC_DRAW
+  )
   
   gl.enableVertexAttribArray(locations.a_position)
 

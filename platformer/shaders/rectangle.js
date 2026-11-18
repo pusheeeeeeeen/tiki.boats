@@ -10,7 +10,6 @@ shaderSetups.push(() => {
     })
   
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -20,7 +19,7 @@ shaderSetups.push(() => {
     gl.bufferData(
       gl.ARRAY_BUFFER,
       new Float32Array(rectanglePoints(x, y, w, h)),
-      gl.STATIC_DRAW
+      gl.DYNAMIC_DRAW
     )
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
@@ -35,7 +34,7 @@ shaderSetups.push(() => {
         ...colors[3],
         ...colors[1]
       ]),
-      gl.STATIC_DRAW
+      gl.DYNAMIC_DRAW
     )
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)

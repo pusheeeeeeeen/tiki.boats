@@ -1,6 +1,3 @@
-if (localStorage.getItem("dev") != "true")
-  id("open-contraption").classList.add("hidden")
-
 const cw = id("contraption-wrapper")
 
 let gearSwoosh = new Howl({
@@ -13,12 +10,36 @@ let contraptionStart = new Howl({
   volume : soundVolume
 })
 
+cw.style.display = "none"
+
 id("open-contraption").onclick = () => {
-  console.log("open-contraption")
-  id("contraption-wrapper").classList.remove("hidden")
+  achievementSong.fade(achievementSong.volume(), 0, fadeTime)
+  setTimeout(() => {
+    stopSong(achievementSong)
+    contraptionSong.volume(musicVolume)
+    contraptionSong.play()
+  }, fadeTime)
+  
+  cw.style.display = ""
+  setTimeout(() => {
+    cw.classList.remove("hidden")
+  }, 0)
   
   dropGear(0)
   dropGear(1)
+}
+
+id("close-contraption").onclick = () => {
+  cw.classList.add("hidden")
+  setTimeout(() => {
+    cw.style.display = "none"
+  }, 200)
+  
+  stopSong(contraptionSong)
+  stopSong(contraptionSongMain)
+
+  playSong(achievementSong)
+  achievementSong.fade(0, musicVolume, fadeTime)
 }
 
 function startRotation() {
@@ -34,7 +55,17 @@ function startRotation() {
 
 let gearSlotID = 0
 function gearSlot(x, y) {
-  cw.innerHTML += `<img src = "./assets/images/gear-slot.png" id = "gear-slot-${gearSlotID}" class = "gear-slot" draggable = "false" style = "left: ${x}px; top: ${y}px;" data-x = "${x}" data-y = "${y}">`
+  let gearSlot = document.createElement("img")
+  gearSlot.src = "./assets/images/gear-slot.png"
+  gearSlot.id = `gear-slot-${gearSlotID}`
+  gearSlot.classList.add("gear-slot")
+  gearSlot.draggable = "false"
+  gearSlot.style.left = x + "px"
+  gearSlot.style.top = y + "px"
+  gearSlot.dataset.x = x
+  gearSlot.dataset.y = y
+  cw.append(gearSlot)
+  
   gearSlotID++
 }
 

@@ -8,6 +8,34 @@ log("main script loaded")
 
 const urlParams = new URLSearchParams(location.search)
 
+function addURLParam(url, name, value = null) {
+  value = value != null ? `=${encodeURIComponent(value)}` : ""
+  
+  let paramsIndex = url.indexOf("?")
+  if (paramsIndex === -1) return `${url}?${name}${value}`
+  
+  let paramsCleaned = url.slice(paramsIndex).replaceAll(
+    new RegExp(`[?&]${name}($|(?=&)|=[^&]*)`, "g"),
+    ""
+  )
+  if (paramsCleaned.startsWith("&")) {
+    paramsCleaned = `?${paramsCleaned.slice(1)}`
+  }
+  
+  return `${url.slice(0, paramsIndex)}${paramsCleaned}${paramsCleaned ? "&" : "?"}${name}${value}`
+}
+
+window.clientMouseX = 0
+window.clientMouseY = 0
+addEventListener("mousemove", e => {
+  clientMouseX = e.clientX
+  clientMouseY = e.clientY
+})
+function updateMousePos(x, y) {
+  clientMouseX = x
+  clientMouseY = y + (showingNavbar ? 55 : 0)
+}
+
 ////////////////////////////////
 
 function copyText(text) {
@@ -48,6 +76,8 @@ document.body.style.setProperty("--page-transition-dur", pageTransitionDur + "s"
 
 let iframe, innerIframe, currentPage, showNavbar = true, showHamburger = true, fadeHamburger = false
 
+function getCurrentPage() { return currentPage }
+
 // [showNavbar, showHamburger, fadeHamburger]
 const navModes = {
   all : [true, true, false],
@@ -58,7 +88,7 @@ const navModes = {
 
 // navType = "default" | "replace" | "historyForward" | "historyBack"
 function openPage(rawPage, navType = "default") {
-  let [_, page, extra] = rawPage.match(/([^?#]+)(.+)?/)
+  let [_, page, extra] = rawPage.match(/([^?#]+)(.+)?/) || [null, "", ""]
   extra = (extra || "").replace(/^\?/, "&")
 
   let urlEnding = `?p=${encodeURIComponent(page)}${extra}`
@@ -76,6 +106,7 @@ function openPage(rawPage, navType = "default") {
   toggleHamburger(false, false)
 
   currentPage = page
+  updateUsableItems()
 
   const data = pages[page]
 
@@ -85,9 +116,13 @@ function openPage(rawPage, navType = "default") {
 
   id("favicon").href = data.favicon ? page + "/favicon.png" : "favicon.png"
 
-  let oldShowNavbar = showingNavbar;
+  let oldShowNavbar = showingNavbar
 
-  [showNavbar, showHamburger, fadeHamburger] = navModes[data.nav || "all"]
+  if (urlParams.has("nav")) {
+    showNavbar = showHamburger = fadeHamburger = false
+  } else {
+    [showNavbar, showHamburger, fadeHamburger] = navModes[data.nav || "all"]
+  }
   
   setNavbar(showNavbar)
   setHamburger(showHamburger || hamburgerShown)
@@ -235,8 +270,7 @@ function toggleHamburger(show = !hamburgerShown, modifyNavbar = true) {
 
     id("hamburger-menu-wrapper").focus()
 
-    if (modifyNavbar)
-      setHamburger(true)
+    if (modifyNavbar) setHamburger(true)
 
     for (let i of queryAll(".hamburger-item > a"))
       i.tabIndex = 0
@@ -246,14 +280,13 @@ function toggleHamburger(show = !hamburgerShown, modifyNavbar = true) {
     id("hamburger-opened-icon").classList.add("hidden")
     id("hamburger-closed-icon").classList.remove("hidden")
 
-    if (modifyNavbar)
-      setHamburger(showHamburger)
+    if (modifyNavbar) setHamburger(showHamburger)
 
     for (let i of queryAll(".hamburger-item > a"))
       i.tabIndex = -1
   }
 
-  updateHamburgerFading()
+  if (modifyNavbar) updateHamburgerFading()
 }
 
 addEventListener("mousedown", updateHamburgerFading)
@@ -374,7 +407,7 @@ addEventListener("keydown", e => {
   }
 })
 
-// very obfuscation  much secure
+// very obfuscation. much secure
 window[atob("AGRldg==")]=localStorage[atob("GV".padStart(3, "Z")+2)]==[]+!0
 
 ////////////////////////////////
@@ -397,7 +430,7 @@ addEventListener("DOMContentLoaded", () => {
 
     queryAll(".hamburger-item > a").forEach(elem => {
       elem.setAttribute("aria-label", elem.innerText)
-      
+      if (elem.firstElementChild) elem = elem.firstElementChild
       elem.innerHTML = elem.innerText.split("").map(
         (char, i, arr) => `<span aria-hidden = "true" style = "transition: transform 0.3s ease ${i / arr.length * 0.15}s">${char}</span>`
       ).join("")
@@ -434,7 +467,7 @@ function updateLinkElements(parent) {
       openPage(elem.dataset.page + (elem.dataset.after || ""))
     })
 
-    elem.href = `?p=${elem.dataset.page}`
+    elem.href = `?p=${elem.dataset.page.replace("?", "&")}`
   })
 }
 
@@ -443,8 +476,6 @@ updateLinkElements(document)
 
 ////////////////////////////////
 
-// type = "short" | "long" | "persistent"
-
 const notifTimes = {
   short : 2.5,
   long : 10
@@ -452,6 +483,7 @@ const notifTimes = {
 
 let notifications = []
 
+// type = "short" | "long" | "persistent"
 function notification(content, type = "long", x = true) {
   let elem = createElem("div.notification")
 
@@ -501,7 +533,7 @@ function notification(content, type = "long", x = true) {
 }
 
 id("clear-notifications").onclick = () => {
-  clearNotifications(false)
+  clearNotifications()
 }
 
 function clearNotifications(force = false) {
@@ -512,12 +544,8 @@ function clearNotifications(force = false) {
     let border = i.querySelector(".notification-border-fill")
 
     border.animate([
-      {
-        borderColor : "red"
-      },
-      {
-        borderColor : "red"
-      },
+      { borderColor : "red" },
+      { borderColor : "red" },
       {}
     ], 700)
   }
@@ -538,7 +566,7 @@ function closeNotification(elem) {
   
   id("notification-count").innerText = numberWithUnit(notifications.length, "notification")
   
-  setTimeout(() => { elem.remove() }, 200)
+  setTimeout(() => elem.remove(), 200)
 }
 
 ////////////////////////////////
@@ -553,6 +581,13 @@ function showOverlayWindow(page) {
   iframe.contentWindow.innerPageLoaded = () => {
     iframe.style.opacity = "1"
   }
+  
+  elem.querySelector(".overlay-window-expand").onclick = () => {
+    elem.classList.add("closing")
+    setTimeout(() => elem.remove(), 200)
+
+    openPage(page)
+  }
 
   elem.querySelector(".overlay-window-reload").onclick = () => {
     iframe.contentWindow?.location.reload()
@@ -560,8 +595,7 @@ function showOverlayWindow(page) {
 
   elem.querySelector(".overlay-window-close").onclick = () => {
     elem.classList.add("closing")
-
-    setTimeout(() => { elem.remove() }, 200)
+    setTimeout(() => elem.remove(), 200)
   }
 }
 
@@ -571,6 +605,9 @@ function createOverlayWindowElem(url, title = null) {
   wrapper.innerHTML = `
     <div class = "overlay-window-header">
       <div class = "overlay-window-title" title = "${title ? title.replaceAll("\"", "\\\"") : ""}">${escapeHTML(title || "")}</div>
+      <button class = "overlay-window-expand overlay-window-button">
+        <icon image = "open-in-new" class = "overlay-window-expand-icon"></icon>
+      </button>
       <button class = "overlay-window-reload overlay-window-button">
         <icon image = "reload-small"></icon>
       </button>
@@ -587,6 +624,13 @@ function createOverlayWindowElem(url, title = null) {
   updateIconElements(wrapper)
 
   return wrapper
+}
+
+////////////////////////////////
+
+if (getExp() > 0) {
+  updateExpColor(id("exp-hamburger-section"))
+  id("exp-hamburger-section").style.display = ""
 }
 
 ////////////////////////////////
@@ -634,8 +678,7 @@ openPage(targetPage + pageAfter, "replace")
 function closeSelf(elem) {
   let notif = notifications.find(x => x.contains(elem))
 
-  if (notif)
-    closeNotification(notif)
+  if (notif) closeNotification(notif)
 }
 
 const randomNotifs = [
@@ -661,7 +704,7 @@ const randomNotifs = [
     ">apples</button>
     or the
     <button class = "link" onclick = "
-      notification('The bees will arrive shortly.<br><small style = \\'text-shadow: 0 1px #f00;\\'>You have been warned.</small>', 'short', false)
+      notification('The bees will arrive shortly.<br><small style = \\'text-shadow: 0 1px red;\\'>You have been warned.</small>', 'short', false)
       closeSelf(this)
     ">bees</button>?
   `
@@ -671,11 +714,12 @@ function easterEggNotif() {
   notification(randomItem(randomNotifs), "persistent", false)
 }
 
-if (pageExists(targetPage) && Math.random() < 1 / 100)
+if (pageExists(targetPage) && Math.random() < 0.01)
   easterEggNotif()
 
 ////////////////////////////////
 
+/*
 if (!localStorage.getItem("workerRan")) {
   async function setupServiceWorker() {
     if (!navigator.serviceWorker) return
@@ -694,6 +738,7 @@ if (!localStorage.getItem("workerRan")) {
 
   localStorage.setItem("workerRan", ":D")
 }
+*/
 
 ////////////////////////////////
 
@@ -716,7 +761,7 @@ function confetti(density = 1) {
     confInterval = setInterval(() => {
       ConfettiParticle.draw()
   
-      if (!ConfettiParticle.particles.length) {
+      if (!ConfettiParticle.particles.size) {
         clearInterval(confInterval)
         confInterval = null
       }
@@ -724,13 +769,23 @@ function confetti(density = 1) {
 }
 
 class ConfettiParticle {
+  static particles = new Set()
+
+  static draw() {
+    confCanvas.width = confCanvas.offsetWidth * devicePixelRatio
+    confCanvas.height = confCanvas.offsetHeight * devicePixelRatio
+
+    for (let i of this.particles)
+      i.draw()
+  }
+  
   constructor() {
     let right = Math.random() < 0.5
     
     this.x = right ? innerWidth : -this.w
     if (right) this.xVel *= -1
 
-    ConfettiParticle.particles.push(this)
+    ConfettiParticle.particles.add(this)
   }
 
   AIR_RES = 0.97
@@ -752,18 +807,6 @@ class ConfettiParticle {
 
   hue = Math.random() * 360
 
-  static particles = []
-
-  static draw() {
-    confCanvas.width = confCanvas.offsetWidth * devicePixelRatio
-    confCanvas.height = confCanvas.offsetHeight * devicePixelRatio
-
-    for (let i of this.particles)
-      i.draw()
-
-    this.particles = this.particles.filter(x => x)
-  }
-
   draw() {
     this.t++
     
@@ -771,7 +814,7 @@ class ConfettiParticle {
     this.y += this.yVel
 
     if (this.y > innerHeight) {
-      ConfettiParticle.particles[ConfettiParticle.particles.indexOf(this)] = null
+      ConfettiParticle.particles.delete(this)
       return
     }
 
@@ -802,8 +845,23 @@ class ConfettiParticle {
 
 ////////////////////////////////
 
+// copied in default-script.js
+let preloadedUrls = new Set()
+function addPreloadLink(url, as) {
+  if (preloadedUrls.has(url)) return
+  preloadedUrls.add(url)
+
+  let elem = createElem("link")
+  elem.rel = "preload"
+  elem.as = as
+  elem.href = url
+  document.head.append(elem)
+}
+
+////////////////////////////////
+
 if (location.origin.endsWith(".replit.dev")) {
-  window.DEV = true
+  window.DEV = window[atob("AGRldg==")] = true
   document.body.classList.add("dev")
 }
 

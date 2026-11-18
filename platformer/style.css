@@ -55,15 +55,30 @@ img {
   transform: translateY(30%);
 }
 
-#leave-achievements {
+#leave-achievements, #open-contraption, #close-contraption {
   height: 50px;
   width: 50px;
   padding: 0;
-  margin-left: auto;
 }
-#leave-achievements > img {
+#leave-achievements > img, #open-contraption > img, #close-contraption > img {
   height: 100%;
 }
+#open-contraption {
+  margin-right: 25px;
+  margin-left: auto;
+}
+
+#close-contraption {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  
+  --border-light: #ccbca8;
+  --border-dark: #9f8564;
+  background: #c4ae93;
+  outline-color: #6e5b44;
+}
+
 .separator {
   margin: 30px 50px;
   background: rgba(255, 255, 255, 0.4);
@@ -498,6 +513,9 @@ img.skin-preview-inner {
   line-height: 24px;
   pointer-events: none;
 }
+#score, #distance {
+  font-variant-numeric: tabular-nums;
+}
 #replay-marker {
   font-size: 80%;
   opacity: 0.8;
@@ -551,17 +569,14 @@ img.skin-preview-inner {
   background: var(--black);
 }
 
-#open-contraption {
-  font-size: 0.5em;
-  margin-left: 100px;
-  padding: 10px 20px;
-}
+
 #contraption-wrapper {
   background-image: url("./assets/images/paper-bg.png");
   background-size: cover;
   z-index: 200;
   position: absolute;
   inset: 0;
+  transition: opacity 0.2s linear;
 }
 
 .gear-slot, .gear {

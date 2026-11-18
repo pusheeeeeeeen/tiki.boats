@@ -71,6 +71,7 @@ h1, h2, h3, h4, h5, h6 {
 
   --bg-highlight: rgba(255, 255, 255, 0.1);
   --bg-subtle-highlight: rgba(255, 255, 255, 0.04);
+  --bg-subtle-highlight-hover: rgba(255, 255, 255, 0.06);
 
   --highlight-border: #fff4;
   --highlight-border-light: #fff5;
@@ -81,16 +82,19 @@ h1, h2, h3, h4, h5, h6 {
 
   --red: #e24;
   
+  --green-light: #6f8;
+  --green: #3d5;
+
+  --exp-color: #f8f;
+
   --ease-in: cubic-bezier(0.86, 0.01, 0.93, 0.89);
-  /* --ease-out: cubic-bezier(.04,.95,.65,.97); */
-  /* --ease-out: cubic-bezier(0.04, 0.95, 0.63, 1); */
   --ease-out: cubic-bezier(0.09, 0.93, 0.78, 1);
   --ease: cubic-bezier(0.96, 0.18, 0.17, 0.91);
-  /* https://stackoverflow.com/questions/29022438/how-to-approximate-a-half-cosine-curve-with-bezier-paths-in-svg */
   --sine-ease: cubic-bezier(0.3642, 0, 0.6358, 1);
 
   --main-font: Roboto, Helvetica, Arial, sans-serif;
   --header-font: Nunito, Roboto, Helvetica, Arial, sans-serif;
+  --exp-font: Nunito, Roboto, Helvetica, Arial, sans-serif;
 
   --height: 100vh;
   --height: 100dvh;
@@ -224,4 +228,32 @@ main.has-canvas > canvas {
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* exp display */
+
+.exp {
+  display: inline-block;
+  position: relative;
+  isolation: isolate;
+  text-shadow: 0 0 8px hsl(var(--hue, 300deg) 50% 50%);
+}
+/* use ::after to not collide with hamburger menu link ::before */
+.exp::after {
+  content: "";
+  display: block;
+  z-index: -1;
+  position: absolute;
+  inset: -10px -20px;
+  mask-image: radial-gradient(closest-side, black, 30%, #0002 80%, transparent);
+  filter: blur(2px);
+  background: linear-gradient(hsl(var(--hue, 300deg) 50% 50% / 0.5) 50%, transparent 50%);
+  background-size: 100% 10px;
+  animation: exp-glow 1s linear infinite;
+}
+
+@keyframes exp-glow {
+  to {
+    background-position: 0 -10px;
+  }
 }

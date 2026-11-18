@@ -1,0 +1,130 @@
+#exp-header {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 22px;
+  font-family: var(--exp-font);
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  animation: exp-show 4s var(--ease-out);
+}
+#exp-header.no-exp {
+  --hue: 355deg !important;
+}
+
+#exp-label {
+  color: hsl(var(--hue, 300deg) 50% 80%);
+}
+
+.exp-decor {
+  aspect-ratio: 1;
+  border: 1px solid hsl(var(--hue, 300deg) 100% 75% / 0.7);
+  animation: rotate linear infinite;
+}
+#exp-header.no-exp .exp-decor {
+  animation: none;
+  transform: rotate(45deg);
+}
+.exp-decor.xs {
+  height: 3px;
+  animation-duration: 5.6s;
+}
+.exp-decor.small {
+  height: 6px;
+  animation-duration: 5.4s;
+}
+.exp-decor.medium {
+  height: 10px;
+  animation-duration: 5.1s;
+}
+.exp-decor.large {
+  height: 16px;
+  animation-duration: 4.5s;
+}
+.exp-decor:nth-of-type(even) {
+  animation-direction: reverse;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes exp-show {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.item {
+  display: block;
+  width: 100%;
+  margin-bottom: 32px;
+  border-radius: 16px;
+  padding: 16px 32px;
+  background: var(--bg-subtle-highlight);
+  border: 1px solid var(--bg-subtle-highlight);
+  transition: transform 0.4s, box-shadow 0.4s, background 0.2s;
+}
+.item.disabled {
+  background: none;
+  cursor: default;
+  border-color: var(--bg-highlight);
+}
+.item.dev-only {
+  box-shadow: 0 0 16px #f0f8;
+  border: 3px double #f0f8;
+}
+.item:hover:not(.disabled) {
+  background: var(--bg-subtle-highlight-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px #0004;
+}
+.item.dev-only:hover:not(.disabled) {
+  box-shadow: 0 4px 16px 4px #f0f8;
+}
+.item:active:not(.disabled) {
+  background: var(--bg-subtle-highlight);
+  transition: transform 0.4s, box-shadow 0.4s;
+}
+h2 {
+  margin: 0 16px 0 0;
+  display: inline-block;
+}
+.item.disabled h2 {
+  opacity: 0.7;
+}
+.cost {
+  font-size: 20px;
+  text-shadow: 0 1px 8px var(--green);
+  font-family: var(--exp-font);
+  font-weight: bold;
+}
+.item.disabled .cost {
+  text-shadow: none;
+}
+.item.too-expensive .cost {
+  color: #fee;
+  text-shadow: 0 1px 8px var(--red);
+}
+.desc {
+  margin-top: 6px;
+  opacity: 0.5;
+  font-style: italic;
+}
+
+#soon {
+  font-family: var(--header-font);
+  font-weight: 500;
+  text-align: center;
+  font-size: 24px;
+  font-style: italic;
+  opacity: 0.3;
+  letter-spacing: 0.05em;
+}

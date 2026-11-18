@@ -1,9 +1,8 @@
 shaderSetups.push(() => {
-  window.coinPickupEffect = (x, y, startSize, percent) => {
+  window.coinPickupEffect = (x, y, startSize, percent, color) => {
     nextFramebuffer()
     
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -13,25 +12,10 @@ shaderSetups.push(() => {
     gl.uniform1f(locations.u_effectSize, startSize * (0.5 + percent ** 0.7 * 2))
     gl.uniform1f(locations.u_strength, 1 - percent)
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-         1,  1,
-        -1,  1,
-         1, -1
-      ]),
-      gl.STATIC_DRAW
-    )
+    gl.uniform4f(locations.u_color, ...color)
 
     gl.activeTexture(gl.TEXTURE0)
-
     gl.bindTexture(gl.TEXTURE_2D, fbTexture)
-
     gl.uniform1i(locations.u_image, 0)
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -64,13 +48,12 @@ shaderSetups.push(() => {
   uniform vec2 u_pos;
   uniform float u_effectSize;
   uniform float u_strength;
+  uniform vec4 u_color;
   
   in vec2 v_position;
   in vec2 v_texPos;
 
   out vec4 outColor;
-
-  const vec4 YELLOW = vec4(1.0, 0.8, 0.0, 1.0);
   
   void main() {
     float dist = abs(distance(u_pos, v_position) - u_effectSize / 2.0);
@@ -84,7 +67,7 @@ shaderSetups.push(() => {
 
       vec4 color = texture(u_image, v_texPos + vec2(-sin(angle), cos(angle)) * strength / u_size * 20.0);
     
-      outColor = mix(color, YELLOW, max(0.0, strength / 6.0));
+      outColor = mix(color, u_color, max(0.0, strength / 6.0));
     }
   }
   `
@@ -97,9 +80,10 @@ shaderSetups.push(() => {
     u_image : gl.getUniformLocation(program, "u_image"),
     u_pos : gl.getUniformLocation(program, "u_pos"),
     u_effectSize : gl.getUniformLocation(program, "u_effectSize"),
-    u_strength : gl.getUniformLocation(program, "u_strength")
+    u_strength : gl.getUniformLocation(program, "u_strength"),
+    u_color : gl.getUniformLocation(program, "u_color")
   }
-
+  
   let positionBuffer = gl.createBuffer()
 
   let vao = gl.createVertexArray()
@@ -107,6 +91,19 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1, -1,
+       1, -1,
+      -1,  1,
+       1,  1,
+      -1,  1,
+       1, -1
+    ]),
+    gl.STATIC_DRAW
+  )
   
   gl.enableVertexAttribArray(locations.a_position)
 

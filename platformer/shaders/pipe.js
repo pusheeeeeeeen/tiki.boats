@@ -1,7 +1,6 @@
 shaderSetups.push(() => {
   window.pipe = (x, h) => {
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -9,25 +8,8 @@ shaderSetups.push(() => {
     gl.uniform1f(locations.u_pos, x)
     gl.uniform1f(locations.u_height, h)
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-    
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([
-        0, 0,
-        1, 0,
-        0, 1,
-        1, 1,
-        0, 1,
-        1, 0
-      ]),
-      gl.STATIC_DRAW
-    )
-
     gl.activeTexture(gl.TEXTURE0)
-
     gl.bindTexture(gl.TEXTURE_2D, images.pipe)
-
     gl.uniform1i(locations.u_image, 0)
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -100,6 +82,19 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      0, 0,
+      1, 0,
+      0, 1,
+      1, 1,
+      0, 1,
+      1, 0
+    ]),
+    gl.STATIC_DRAW
+  )
   
   gl.enableVertexAttribArray(locations.a_position)
 

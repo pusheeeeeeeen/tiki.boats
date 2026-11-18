@@ -1,7 +1,6 @@
 shaderSetups.push(() => {
   window.chain = (x, h) => {
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -12,9 +11,7 @@ shaderSetups.push(() => {
     gl.uniform1f(locations.u_chainRepeatCount, h / 24)
 
     gl.activeTexture(gl.TEXTURE0)
-
     gl.bindTexture(gl.TEXTURE_2D, images.chain)
-
     gl.uniform1i(locations.u_image, 0)
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -44,7 +41,6 @@ shaderSetups.push(() => {
   precision highp float;
 
   uniform sampler2D u_image;
-
   uniform float u_chainRepeatCount;
 
   in vec2 v_position;
@@ -84,18 +80,7 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  
-  gl.enableVertexAttribArray(locations.a_position)
 
-  gl.vertexAttribPointer(
-    locations.a_position,
-    2, // size
-    gl.FLOAT, // type
-    false, // normalize
-    0, // stride
-    0 // offset
-  )
-    
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array([
@@ -107,5 +92,16 @@ shaderSetups.push(() => {
       1, 0
     ]),
     gl.STATIC_DRAW
+  )
+  
+  gl.enableVertexAttribArray(locations.a_position)
+
+  gl.vertexAttribPointer(
+    locations.a_position,
+    2, // size
+    gl.FLOAT, // type
+    false, // normalize
+    0, // stride
+    0 // offset
   )
 })

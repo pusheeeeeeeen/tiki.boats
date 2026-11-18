@@ -69,3 +69,9 @@ function displaySetting(settingName, data) {
 
   categoryElems[data.category].append(elem)
 }
+
+let expCount = parent.getExp()
+if (expCount > 0) {
+  id("exp-section").classList.add("shown")
+  id("exp-count").innerText = expCount
+}

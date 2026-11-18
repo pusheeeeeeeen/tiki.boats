@@ -1,10 +1,10 @@
-let achievementsFromPauseMenu = false
+let restartMainMusic = false
 
 id("achievements-button").onclick = () => {
-  achievementsFromPauseMenu = game.topUI.type === "pause"
+  achievementSong.volume(musicVolume)
+  restartMainMusic = game.topUI.type === "pause" || game.topUI.type === "death"
 
   game.showUI("achievements")
-  // id("achievements").classList.remove("hidden")
   
   playSong(achievementSong)
   pauseSong(song)
@@ -13,20 +13,17 @@ id("achievements-button").onclick = () => {
 
 id("leave-achievements").onclick = () => {
   game.hideUI("achievements")
-  // id("achievements").classList.add("hidden")
+  
+  achievementSong.fade(achievementSong.volume(), 0, fadeTime)
+  setTimeout(() => stopSong(achievementSong), fadeTime)
 
-  stopSong(achievementSong)
-
-  if (achievementsFromPauseMenu) playSong(song)
-  // achievementSong.fade(achievementSong.volume(), 0, fadeTime)
+  if (restartMainMusic) {
+    setTimeout(() => { 
+      playSong(song)
+      song.fade(0, musicVolume, fadeTime)
+    }, fadeTime / 2)
+  }
 }
-
-// id("achievements-scroll").onscroll = () => {
-  // id("achievements").classList[
-  //   id("achievements-scroll").scrollTop > 0 ? "add" : "remove"
-  // ]("scrolled")
-  // id("achievements-title").style.boxShadow = `0 ${Math.min(id("achievements-scroll").scrollTop / 200, 2)}px ${id("achievements-scroll").scrollTop >= 30 ? 2 : 0}px rgba(0, 0, 0, 0.2)`
-// }
 
 id("clear-achievements").onclick = () => {
   if (confirm("Are you sure you want to clear all achievements, skins, and stats?\nThis cannot be undone.\n\n(This will also reload the page.)")) {

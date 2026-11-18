@@ -7,10 +7,16 @@ function log(message) {
   )
 }
 
+if (parent !== window) {
+  addEventListener("mousemove", e => {
+    parent.updateMousePos(e.clientX, e.clientY)
+  })
+}
+
 const urlParams = new URLSearchParams(location.search),
       mode = urlParams.get("mode")
 
-log(`script loaded`)
+log("script loaded")
 
 const pathDepth = [...location.pathname.matchAll("/")].length - 1,
       path = pathDepth ? "../".repeat(pathDepth) : "./"
@@ -20,40 +26,18 @@ const pathText = location.pathname.replace(/[^/]+\.html$/, "")
 addEventListener("DOMContentLoaded", () => {
   window.innerPageLoaded?.()
 
-  log(`dom loaded`)
+  log("dom loaded")
 
   if (mode !== "main") window.onPageShown?.()
   
   updateIconElements(document)
 
   if (!localStorage.getItem("hasVisitedPage" + pathText))
-    classAll("tutorial").forEach(elem => { elem.classList.add("show") })
+    classAll("tutorial").forEach(elem => elem.classList.add("show"))
 
   localStorage.setItem("hasVisitedPage" + pathText, true)
 
   const main = query("main")
-
-  /*
-  let scrollIndicatorTop = createElem("div#scroll-indicator-top.scroll-indicator"),
-      scrollIndicatorBottom = createElem("div#scroll-indicator-bottom.scroll-indicator")
-  
-  document.body.append(scrollIndicatorTop, scrollIndicatorBottom)
-
-  if (mode === "main") {
-    function updateScrollIndicators() {
-      let {scrollTop} = main,
-          scrollBottom = main.scrollHeight - scrollTop - main.offsetHeight
-  
-      scrollIndicatorTop.style.opacity = clamp(scrollTop / 100, 0, 1)
-      scrollIndicatorBottom.style.opacity = clamp(scrollBottom / 100, 0, 1)
-    }
-  
-    updateScrollIndicators()
-  
-    addEventListener("resize", updateScrollIndicators)
-    main.addEventListener("scroll", updateScrollIndicators)
-  }
-  */
 
   queryAll("a").forEach(elem => {
     elem.dataset.linktext ||= elem.innerText
@@ -62,7 +46,7 @@ addEventListener("DOMContentLoaded", () => {
     
     if (elem.dataset.page) {
       if (mode === "main") {
-        elem.href = `/?p=${elem.dataset.page}`
+        elem.href = `/?p=${elem.dataset.page.replace("?", "&")}`
         
         elem.onclick = e => {
           if (e.metaKey) return
@@ -74,8 +58,10 @@ addEventListener("DOMContentLoaded", () => {
             page : elem.dataset.page
           })
         }
-      } else
-        elem.href = `/${elem.dataset.page}/page.html?mode=overlay`
+      } else {
+        let [_, page, params] = elem.dataset.page.match(/(.+?)(\?.*)?$/)
+        elem.href = `/${page}/page.html?mode=overlay${params?.replace(/^\?/, "&") || ""}`
+      }
     } else if (mode === "main")
       elem.onclick = e => {
         if (e.metaKey) return
@@ -89,6 +75,10 @@ addEventListener("DOMContentLoaded", () => {
         })
       }
   })
+
+  for (let elem of queryAll(".exp:not(.no-color), .exp-hue-target")) {
+    parent.updateExpColor(elem)
+  }
 })
 
 function updateIconElements(parent) {
@@ -117,6 +107,31 @@ if (mode === "main") {
     if (e.key === "/" && !e.target.closest("input, textarea, [contenteditable]"))
       parent.showCommandLine()
   })
+}
+
+function exp(amount, x, y) {
+  if (parent !== window) {
+    parent?.exp(amount, x, y, true)
+  }
+}
+
+function actionText(x, y, text) {
+  if (parent !== window) {
+    parent?.actionText(x, y, text, true)
+  }
+}
+
+// copied in script.js
+let preloadedUrls = new Set()
+function addPreloadLink(url, as) {
+  if (preloadedUrls.has(url)) return
+  preloadedUrls.add(url)
+  
+  let elem = createElem("link")
+  elem.rel = "preload"
+  elem.as = as
+  elem.href = url
+  document.head.append(elem)
 }
 
 addEventListener("load", () => {

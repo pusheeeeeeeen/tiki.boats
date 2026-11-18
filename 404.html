@@ -170,7 +170,7 @@
       <div id = "particles"></div>
       <div id = "logo">
         <div id = "logo-inner">
-          4<div id = "fish-wrapper"><img id = "fish" src = "/tiki-fish.png"></div>4
+          4<div id = "fish-wrapper"><img id = "fish" src = "/images/tiki-fish.png"></div>4
         </div>
         <div id = "subtext-wrapper">
           <div id = "error">ERROR</div>
@@ -181,8 +181,10 @@
   </body>
   <script src = "/helpers.js"></script>
   <script>
-    id("fish").onload = () => {
+    if (id("fish").complete) {
       query("main").classList.add("show")
+    } else {
+      id("fish").onload = () => query("main").classList.add("show")
     }
 
     let canSplash = true
@@ -191,18 +193,18 @@
       if (!canSplash) return
 
       canSplash = false
-      setTimeout(() => { canSplash = true}, 250)
+      setTimeout(() => canSplash = true, 250)
 
       let x = e.pageX, y = e.pageY
 
       for (let i = 0; i < 3; i++)
-        setTimeout(() => { splash(x, y, 1 - i / 3) }, i * 400)
+        setTimeout(() => splash(x, y, 1 - i / 3), i * 400)
 
       let flippedFish = queryAll(".falling-fish.flip"),
           notFlipped = queryAll(".falling-fish:not(.flip)")
 
-      flippedFish.forEach(fish => { fish.classList.remove("flip") })
-      notFlipped.forEach(fish => { fish.classList.add("flip") })
+      flippedFish.forEach(fish => fish.classList.remove("flip"))
+      notFlipped.forEach(fish => fish.classList.add("flip"))
     }
 
     let canSplashMove = true
@@ -211,7 +213,7 @@
       if (!canSplashMove) return
 
       canSplashMove = false
-      setTimeout(() => { canSplashMove = true}, 150)
+      setTimeout(() => canSplashMove = true, 150)
 
       splash(e.pageX, e.pageY, 0.5)
     }
@@ -234,7 +236,7 @@
 
       id("particles").append(splash)
 
-      setTimeout(() => { splash.remove() }, strength * 4000)
+      setTimeout(() => splash.remove(), strength * 4000)
     }
 
     setTimeout(() => {
@@ -256,7 +258,7 @@
 
         let fish = createElem("img.falling-fish")
 
-        fish.src = "/tiki-fish.png"
+        fish.src = "/images/tiki-fish.png"
 
         let w = Math.random() * 50 + 50
         fish.style.width = `${w}px`

@@ -9,7 +9,7 @@ class Platform {
 
     this.num = options.num || 0
 
-    let {size, color, variant, spikes, rareSpikes, spikeIndex, coin, sideCoin} = randomizePlatform(level.random, this.num, level.spikeChance, options)
+    let {size, color, variant, spikes, rareSpikes, spikeIndex, coin, sideCoin, cog} = randomizePlatform(level.random, this.num, level.spikeChance, options)
 
     this.size = size
     this.variant = variant
@@ -45,6 +45,10 @@ class Platform {
       
       new Coin(this, ...coinPos)
       this.hasCoin = true
+    }
+
+    if (cog) {
+      new Cog(this, this.x + this.w / 2, this.y - 200)
     }
   }
 

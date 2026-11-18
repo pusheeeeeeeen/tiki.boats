@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset = "utf-8">
+    <script src = "../default-script.js"></script>
+    <link href = "../default-styles.css" rel = "stylesheet" type = "text/css">
+    <link href = "../page-styles.css" rel = "stylesheet" type = "text/css">
+    <link rel = "preload" href = "../fonts/roboto.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-italic.ttf" as = "font" type = "font/ttf">
+    <link rel = "preload" href = "../fonts/roboto-bold-italic.ttf" as = "font" type = "font/ttf">
+    <style>
+      @keyframes bg {
+        from {
+          background: #ff0;
+        }
+        to {
+          background: #ff0;
+          background: color(display-p3 1 1 0);
+        }
+      }
+      
+      main {
+        animation: bg 10s ease-in-out forwards;
+        color: black;
+      }
+
+      p {
+        margin-bottom: 40px;
+        line-height: 1.8;
+      }
+
+      h1, main {
+        text-align: center;
+      }
+      
+      #header {
+        font-size: 30px;
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+      }
+
+      #button {
+        border: 2px solid #fd4;
+        font-size: 20px;
+        background: transparent;
+        border-radius: 15px;
+        padding: 5px 10px;
+        box-shadow: 0 2px 5px #0001;
+        animation: fade-in 1s ease-out;
+      }
+      #button:hover {
+        box-shadow: 0 2px 5px #0003;
+      }
+      #button:active {
+        box-shadow: none;
+        background: #f802;
+      }
+
+      .hide {
+        display: none;
+      }
+
+      #photo {
+        position: absolute;
+        right: 10px;
+        top: 100%;
+        opacity: 0;
+        width: max(10%, 50px);
+        transition: transform 0.5s ease-in, opacity 0.2s ease 0.5s;
+      }
+      #photo.show {
+        opacity: 1;
+        transform: translateY(-50%);
+        transition: transform 0.5s ease-out, opacity 0.2s;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1 id = "header">YELLOW</h1>
+        <p>
+          Look at this page for at least 10 seconds before visiting tonsky.me.<br>
+          This will help your eyes adjust to the unfortunate choice of background color.
+        </p>
+        <h1 id = "timer-wrapper"><span id = "timer"></span> seconds remaining</h1>
+        <button id = "button" class = "hide">OK I'm ready</button>
+      </section>
+      <img id = "photo" src = "photo.png">
+    </main>
+  </body>
+  <script src = "../helpers.js"></script>
+  <script>
+    const CONFIRMATION = "I acknowledge that tiki.boats is not responsible for any physical or emotional damage caused by the viewing of tonsky.me"
+    
+    let waitRemaining = 10
+
+    let timerInterval = setInterval(() => {
+      waitRemaining--
+
+      updateTimer()
+
+      if (!waitRemaining) {
+        id("timer-wrapper").classList.add("hide")
+        id("button").classList.remove("hide")
+        clearInterval(timerInterval)
+      }
+    }, 1000)
+
+    updateTimer()
+
+    function updateTimer() {
+      id("timer").innerText = waitRemaining
+    }
+
+    id("button").onclick = () => {      
+      if (confirm(CONFIRMATION)) {
+        open("//tonsky.me", "_parent")
+      }
+
+      clearTimeout(easterEggTimeout)
+    }
+
+    let easterEggTimeout
+
+    const photo = id("photo")
+    photo.onload = () => {
+      easterEggTimeout = setTimeout(() => {
+        photo.classList.add("show")
+        setTimeout(() => photo.classList.remove("show"), 1500)
+      }, Math.random() * 10000 + 15000)
+    }
+  </script>
+</html>

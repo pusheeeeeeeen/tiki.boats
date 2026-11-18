@@ -1,7 +1,6 @@
 shaderSetups.push(() => {
   window.coin = (x, y, w, h, image, progress, offset, options) => {
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -16,9 +15,7 @@ shaderSetups.push(() => {
     gl.uniform1f(locations.u_opacity, options.opacity ?? 1)
 
     gl.activeTexture(gl.TEXTURE0)
-
     gl.bindTexture(gl.TEXTURE_2D, image)
-
     gl.uniform1i(locations.u_image, 0)
 
     gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -29,9 +26,7 @@ shaderSetups.push(() => {
   uniform vec2 u_size;
   uniform vec2 u_imgPos;
   uniform vec2 u_imgSize;
-
   uniform float u_frame;
-  
   uniform float u_offset;
   
   in vec2 a_position;
@@ -53,9 +48,7 @@ shaderSetups.push(() => {
   precision highp float;
 
   uniform sampler2D u_image;
-  
   uniform float u_offset;
-
   uniform float u_opacity;
 
   in vec2 v_position;
@@ -64,7 +57,6 @@ shaderSetups.push(() => {
   
   void main() {
     vec4 imgColor = texture(u_image, v_position);
-
     if (imgColor.a == 0.0) discard;
 
     float strength = u_offset * 0.3;
@@ -93,18 +85,7 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  
-  gl.enableVertexAttribArray(locations.a_position)
 
-  gl.vertexAttribPointer(
-    locations.a_position,
-    2, // size
-    gl.FLOAT, // type
-    false, // normalize
-    0, // stride
-    0 // offset
-  )
-    
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array([
@@ -116,5 +97,16 @@ shaderSetups.push(() => {
       1, 0
     ]),
     gl.STATIC_DRAW
+  )
+  
+  gl.enableVertexAttribArray(locations.a_position)
+
+  gl.vertexAttribPointer(
+    locations.a_position,
+    2, // size
+    gl.FLOAT, // type
+    false, // normalize
+    0, // stride
+    0 // offset
   )
 })

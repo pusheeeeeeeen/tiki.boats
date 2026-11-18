@@ -6,7 +6,7 @@ const commands = {
     autofill : [
       [
         ...Object.keys(pages),
-        ...Object.values(legacyPages).map(x => `legacy/${x.link}`.slice(0, -1))
+        ...Object.values(legacyPages).map(x => `legacy/${x.link}`)
       ]
     ]
   },
@@ -72,15 +72,15 @@ const commands = {
           return
         }
 
-        if (value === "true") value = true
-        else if (value === "false") value = false
+        if (value === "true" || value === "yes") value = true
+        else if (value === "false" || value === "no") value = false
         
         if (!attemptSetSetting(setting, value))
-          notification(`Could not set setting '${setting}' to '${value}'`, "shot")
+          notification(`Could not set setting '${setting}' to '${value}'`, "short")
       }
     },
     autofill : [
-      () => Object.keys(settings),
+      Object.keys(settings),
       tokens => {
         let setting = settings[tokens[0]]
 
@@ -92,10 +92,194 @@ const commands = {
       }
     ]
   },
+  actiontext : {
+    run(tokens) {
+      actionText(clientMouseX, clientMouseY, tokens.join(" "))
+    }
+  },
+  sparkle : {
+    run(tokens) {
+      parent.sparkle(tokens[0] !== "off")
+    },
+    autofill : [
+      ["on", "off"]
+    ]
+  },
   confetti : {
     run(tokens) {
       let density = parseFloat(tokens[0] || "1")
       confetti(density > 0 && density <= 1000 ? density : 1)
+    }
+  },
+  fish : {
+    run() {
+      if (currentPage !== "home") return
+      showHamburger = false
+      toggleHamburger(false)
+      innerIframe.contentWindow.id("logo-text").animate(
+        [{ opacity: 0 }],
+        { duration: 1000, fill: "forwards" }
+      )
+    }
+  },
+  storage : {
+    run(tokens) {
+      if (!tokens[0]) {
+        notification(`${localStorage.length} keys in local storage${localStorage.getItem("backup") ? "<br>Has backup" : ""}`, "short")
+      } else if (tokens[0] === "save") {
+        let storage = {}
+  
+        for (let i = 0; i < localStorage.length; i++) {
+          let key = localStorage.key(i)
+          storage[key] = localStorage.getItem(key)
+        }
+  
+        localStorage.clear()
+        localStorage.setItem("backup", JSON.stringify(storage))
+
+        
+        parent.location = addURLParam(
+          parent.location.href,
+          "backup",
+          `${Object.keys(storage).length}C${storage.backup ? "N" : ""}`
+        )
+      } else if (tokens[0] === "load") {
+        let storage = localStorage.getItem("backup")
+        if (!storage) {
+          notification("No storage backup to load", "short")
+          return
+        }
+
+        localStorage.clear()
+
+        try {
+          storage = JSON.parse(storage)
+        } catch {
+          notification("Invalid storage backup - failed to parse JSON", "short")
+          return
+        }
+
+        for (let key in storage) {
+          localStorage.setItem(key, storage[key])
+        }
+
+        parent.location = addURLParam(
+          parent.location.href,
+          "backup",
+          Object.keys(storage).length + (storage.backup ? "N" : "")
+        )
+      }
+    },
+    autofill : [
+      ["save", "load"]
+    ]
+  }
+}
+
+let backupData = urlParams.get("backup")
+if (backupData) {
+  let created = backupData.includes("C"),
+      count = parseInt(backupData),
+      nested = backupData.endsWith("N")
+  
+  notification(`Storage backup ${created ? "created" : "loaded"}<br>${count} keys${nested ? ", has nested backup" : ""}`, "short")
+}
+
+if (window["\u0000dev"]) {
+  Object.assign(commands, {
+    exp : {
+      run(tokens) {
+        if (tokens[0] === "get") {
+          notification(`Current EXP: <span style = "font-family: var(--exp-font); font-weight: bold;">${getExp()}</span>`, "short")
+        } else {
+          let amount = parseInt(tokens[1])
+          if (isNaN(amount) || amount < 0) return
+
+          if (tokens[0] === "add") {
+            addExp(amount)
+          } else if (tokens[0] === "sub") {
+            addExp(-amount)
+          } else if (tokens[0] === "set") {
+            addExp(amount - getExp())
+          }
+        }
+      },
+      autofill : [
+        ["get", "set", "add", "sub"]
+      ]
+    },
+    item : {
+      run(tokens) {
+        let [action, name, count] = tokens
+
+        if (!(name in itemData)) {
+          if (name === "*") {
+            let itemList = ["use", "del"].includes(action) ? items : itemData
+            for (let i in itemList)
+              commands.item.run([action, i, count || "all"])
+          } else {
+            notification(`Invalid item '${name}'`, "short")
+          }
+          return
+        }
+
+        if (count === "all" && ["buy", "use", "del"].includes(action)) {
+          count = Infinity
+        } else {
+          count = parseInt(count)
+          if (isNaN(count) || count < 1 || count > 100) {
+            count = 1
+          }
+        }
+
+        if (action === "get") {
+          for (let i = 0; i < count; i++)
+            purchaseItem(name, true)
+        } else if (action === "buy") {
+          if (!itemData[name].cost && count === Infinity) {
+            notification(`Cannot buy 'all' of '${itemData[name].name}' because it does not cost any EXP`)
+          } else {
+            for (let i = 0; i < count; i++) {
+              if (!purchaseItem(name)) {
+                notification(i ? `Purchased ${i} '${itemData[name].name}' for ${itemData[name].cost * i} EXP` : `Not enough EXP (need ${itemData[name].cost}, have ${getExp()})`)
+                break
+              }
+            }
+          }
+        } else if (action === "run") {
+          for (let i = 0; i < count; i++)
+            useItem(name, null, true)
+        } else if (action === "use") {
+          count = Math.min(count, items[name])
+          for (let i = 0; i < count; i++)
+            if (!useItem(name)) break
+        } else if (action === "del") {
+          for (let i = 0; i < count; i++)
+            if (!deleteItem(name)) break
+        }
+      },
+      autofill : [
+        ["get", "run", "del", "buy", "use"],
+        Object.keys(itemData).concat("*"),
+        tokens => ["buy", "use", "del"].includes(tokens[0]) ? ["all"] : []
+      ]
+    }
+  })
+}
+
+// pls dont hack
+const DEV_LINK = "f7decadb-bf65-49f9-a237-32155b0dc62b-00-2zd82xa5yg7wt.kirk.replit.dev"
+
+if (window.DEV) {
+  commands.prod = {
+    run() {
+      location.href = location.href.replace(DEV_LINK, "tiki.boats")
+    }
+  }
+} else if (window["\u0000dev"]) {
+  commands.dev = {
+    run() {
+      location.href = location.href.replace("tiki.boats", DEV_LINK)
     }
   }
 }
@@ -106,6 +290,8 @@ commands.re = commands.reload
 commands.ow = commands.overlaywindow
 commands.n = commands.notif
 commands.s = commands.setting
+commands.i = commands.item
+commands.at = commands.actiontext
 
 const commandNames = Object.keys(commands)
 

@@ -25,12 +25,12 @@ function executeSolution(data) {
     executeSolution(data.previous)
 
   setTimeout(() => {
-    iframe.contentWindow.postMessage({type : "move", move : data.move}, "https://shnebir.com/")
+    iframe.contentWindow.postMessage({type : "move", move : data.move}, "https://games.shnebir.com/")
   }, data.moves * 100)
 }
 
 iframe.onload = () => {
-  iframe.contentWindow.postMessage({type : "get"}, "https://shnebir.com/")
+  iframe.contentWindow.postMessage({type : "get"}, "https://games.shnebir.com/")
 }
 
 onmessage = ({data}) => {
@@ -49,4 +49,5 @@ onmessage = ({data}) => {
 let params = new URLSearchParams(location.search),
     layout = params.get("p")
 
-iframe.src = `//shnebir.com/ball-thing/?embed&noRobot${layout ? `&p=${encodeURIComponent(layout)}` : ""}`
+iframe.src = `//games.shnebir.com/ball-thing/?embed&noRobot${layout ? `&p=${encodeURIComponent(layout)}` : ""}`
+iframe.sandbox = "allow-scripts allow-same-origin"

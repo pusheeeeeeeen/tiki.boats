@@ -1,7 +1,6 @@
 shaderSetups.push(() => {
   window.background = (fg1, fg2, fg3, bg1, bg2, bg3, opacity1, opacity2, offset1, offset2, repeatCount1, repeatCount2) => {
     gl.useProgram(program)
-
     gl.bindVertexArray(vao)
 
     gl.uniform2f(locations.u_size, width, height)
@@ -142,17 +141,6 @@ shaderSetups.push(() => {
   gl.bindVertexArray(vao)
 
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
-  
-  gl.enableVertexAttribArray(locations.a_position)
-
-  gl.vertexAttribPointer(
-    locations.a_position,
-    2, // size
-    gl.FLOAT, // type
-    false, // normalize
-    0, // stride
-    0 // offset
-  )
 
   gl.bufferData(
     gl.ARRAY_BUFFER,
@@ -165,5 +153,16 @@ shaderSetups.push(() => {
       1, 0
     ]),
     gl.STATIC_DRAW
+  )
+  
+  gl.enableVertexAttribArray(locations.a_position)
+
+  gl.vertexAttribPointer(
+    locations.a_position,
+    2, // size
+    gl.FLOAT, // type
+    false, // normalize
+    0, // stride
+    0 // offset
   )
 })

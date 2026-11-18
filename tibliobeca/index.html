@@ -4,6 +4,7 @@
     <meta charset = "UTF-8">
     <title>Tibliobeca Client</title>
     <link rel = "stylesheet" href = "style.css">
+    <link rel = "stylesheet" href = "https://shnebir.com/weird_fonts.css">
   </head>
   <body>
     <div id = "editor">
@@ -34,11 +35,8 @@
       <input id = "allow-deletion" type = "checkbox" checked>
       <br>
       <label for = "editor-version">editor version:</label>
-      <select id = "editor-version">
-        <option value = "">tinymce (current)</option>
-        <option value = "test">quill test</option>
-        <option value = "document_1.0">legacy (broken)</option>
-      </select>
+      <input id = "editor-version"></input>
+      <span style = "opacity: 0.5; font-size: 80%;">document_1.0 / test</span>
       <hr>
       <div id = "editor-actions">
         <button id = "save">save</button>

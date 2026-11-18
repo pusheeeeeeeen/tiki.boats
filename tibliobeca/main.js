@@ -388,16 +388,11 @@ function createDocumentListItem(docId, data) {
   return row
 }
 
-const versionColors = {
-  "document_1.0" : "cornflowerblue",
-  current : "transparent"
-}
-
 function createRowHTML(docId, data) {
   let name = htmlToText(data.documentName),
       text = htmlToText(data.documentText)
 
-  let version = escapeHTML(data.version || "current")
+  let version = escapeHTML(data.version || "")
 
   return `
     <td class = "doc-id">
@@ -409,7 +404,7 @@ function createRowHTML(docId, data) {
     <td class = "doc-preview" title = "${text}">
       ${text}
     </td>
-    <td class = "dot" style = "--color: ${versionColors[version]}" title = "version: ${version}"></td>
+    <td class = "dot" ${version && `style = "--color: cornflowerblue" title = "version: ${version}"`}></td>
     <td class = "dot" ${data.cantDelete ? "style = '--color: red' title = 'can’t be deleted'" : ""}></td>
   `
 }

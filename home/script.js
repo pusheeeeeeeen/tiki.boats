@@ -16,18 +16,20 @@ id("hamburger-text").addEventListener("click", () => {
   parent.toggleHamburger(true)
 })
 
-let speedMult = 1
+let speedMult = 1, canvasScrollOffset = 0
 
 query("main").onscroll = () => {
-  let scroll = Math.max(0, query("main").scrollTop / 2)
+  canvasScrollOffset = Math.max(0, query("main").scrollTop / 2)
   
-  id("fish-canvas").style.transform = `translateY(${scroll}px)`
-  id("logo-text").style.transform = `translateY(${scroll}px)`
+  id("fish-canvas").style.transform = `translateY(${canvasScrollOffset}px)`
+  id("logo-text").style.transform = `translateY(${canvasScrollOffset}px) rotate(-5deg)`
 
   speedMult = Math.sqrt(clamp(id("logo-section").getBoundingClientRect().bottom / height, 0, 1))
 }
 
 ////////////////////////////////
+
+const highQualityGraphics = parent.getSetting("highGraphics")
 
 const canvas = id("fish-canvas"), gl = canvas.getContext("webgl2")
 
@@ -47,8 +49,8 @@ in float a_deathPercentage;
 uniform vec2 u_resolution;
 
 out vec2 v_texPos;
-flat out float v_opacity;
-flat out float v_alivePercentage;
+out float v_opacity;
+out float v_alivePercentage;
 
 void main() {
   gl_Position = vec4((a_pos / u_resolution - 0.5) * vec2(2, -2), 0, 1);
@@ -64,8 +66,8 @@ const fishFS = `#version 300 es
 precision mediump float;
 
 in vec2 v_texPos;
-flat in float v_opacity;
-flat in float v_alivePercentage;
+in float v_opacity;
+in float v_alivePercentage;
 
 uniform sampler2D u_image;
 uniform sampler2D u_image2;
@@ -121,59 +123,108 @@ const fishPickupHeight = 20
 
 ////////////////////////////////
 
-const waveVS = `#version 300 es
-
-in vec2 a_pos;
-
-out vec2 v_texPos;
-out float v_normalizedY;
-
-void main() {
-  gl_Position = vec4(a_pos, 0, 1);
-
-  v_texPos = a_pos / 2.0 + 0.5;
-  v_normalizedY = 1.0 - v_texPos.y;
-}
-`
-
-const waveFS = `#version 300 es
-
-precision mediump float;
-
-in vec2 v_texPos;
-in float v_normalizedY;
-
-uniform sampler2D u_bgTex;
-
+let waveVS, waveFS
+const waveFunc = `
 uniform float u_waveOffset;
 
 uniform vec3 u_sineOffsets;
 uniform vec3 u_sineWidths;
 uniform vec3 u_sineHeights;
 
-out vec4 outColor;
+float wave(float x, float y, float normalizedY) {
+  vec3 sines = sin(x * 0.5 / u_sineWidths + u_sineOffsets) * u_sineHeights;
 
+  float strength = (normalizedY * 0.6 + 0.4) * (sines[0] + sines[1] + sines[2]);
+
+  return sin(y / 48.0 + u_waveOffset + strength);
+}
+`
+const waveColorFunc = `
 const vec3 WAVE_COLOR = vec3(68, 170, 204) / 255.0;
 
-float wave(float x, float normalizedY) {
-  vec3 sines = sin(x / u_sineWidths + u_sineOffsets) * u_sineHeights;
-
-  return (normalizedY * 0.6 + 0.4) * (sines.x + sines.y + sines.z);
-}
-
-void main() {
-  float waveStrength = sin(gl_FragCoord.y / 48.0 + u_waveOffset + wave(gl_FragCoord.x / 2.0, v_normalizedY));
-
-  outColor = vec4(
-    mix(
-      texture(u_bgTex, v_texPos + vec2(0, waveStrength / 400.0)).rgb,
-      WAVE_COLOR,
-      waveStrength * 0.2 + 0.6
-    ),
-    1
+vec3 waveColor(float waveStrength) {
+  return mix(
+    texture(u_bgTex, v_texPos + vec2(0, waveStrength * 0.003)).rgb,
+    WAVE_COLOR,
+    waveStrength * 0.2 + 0.6
   );
 }
 `
+
+if (highQualityGraphics) {
+  waveVS = `#version 300 es
+
+  in vec2 a_pos;
+
+  out vec2 v_texPos;
+  out float v_normalizedY;
+
+  void main() {
+    gl_Position = vec4(a_pos * 2.0 - 1.0, 0, 1);
+
+    v_texPos = a_pos;
+    v_normalizedY = 1.0 - a_pos.y;
+  }
+  `
+
+  waveFS = `#version 300 es
+
+  precision mediump float;
+
+  in vec2 v_texPos;
+  in float v_normalizedY;
+
+  uniform sampler2D u_bgTex;
+
+  out vec4 outColor;
+
+  ${waveFunc}
+  ${waveColorFunc}
+
+  void main() {
+    outColor = vec4(waveColor(wave(gl_FragCoord.x, gl_FragCoord.y, v_normalizedY)), 1);
+  }
+  `
+} else {
+  waveVS = `#version 300 es
+
+  in vec2 a_pos;
+
+  uniform vec2 u_resolution;
+
+  out vec2 v_texPos;
+  out float v_waveStrength;
+
+  ${waveFunc}
+
+  void main() {
+    gl_Position = vec4(a_pos * 2.0 - 1.0, 0, 1);
+
+    v_texPos = a_pos;
+    
+    vec2 screenPos = a_pos * u_resolution;
+    v_waveStrength = wave(screenPos.x, screenPos.y, 1.0 - a_pos.y);
+  }
+  `
+
+  waveFS = `#version 300 es
+
+  precision mediump float;
+
+  in vec2 v_texPos;
+  in float v_waveStrength;
+
+  uniform sampler2D u_bgTex;
+
+  out vec4 outColor;
+
+  ${waveColorFunc}
+
+  void main() {
+    outColor = vec4(waveColor(v_waveStrength), 1);
+  }
+  `
+}
 
 let waveProg = _gl.createAndSetupProgram(
   waveVS, waveFS,
@@ -185,18 +236,47 @@ let waveProg = _gl.createAndSetupProgram(
     u_waveOffset : "float",
     u_sineOffsets : "vec3",
     u_sineWidths : "vec3",
-    u_sineHeights : "vec3"
+    u_sineHeights : "vec3",
+    ...(!highQualityGraphics ? {u_resolution : "vec2"} : {})
   }
 )
 
-waveProg.buffers.a_pos.set(new Float32Array([
-  -1, -1,
-   1, -1,
-  -1,  1,
-   1,  1,
-  -1,  1,
-   1, -1
-]), gl.STATIC_DRAW)
+let updateWaveShader, waveShaderPosnsLength
+
+if (highQualityGraphics) {
+  waveProg.buffers.a_pos.set(new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), gl.STATIC_DRAW)
+  
+  updateWaveShader = () => {}
+  waveShaderPosnsLength = 4
+} else {
+  let lastW, lastH
+  
+  updateWaveShader = () => {
+    let w = Math.round(width * 0.02),
+        h = Math.round(height * 0.02)
+
+    if (w === lastW && h === lastH) return
+
+    lastW = w
+    lastH = h
+
+    let posns = []
+    
+    for (let y = 0; y < h; y++) {
+      if (y) posns.push(1, y / h, 0, y / h)
+      
+      for (let x = 0; x <= w; x++) {
+        posns.push(x / w, y / h, x / w, (y + 1) / h)
+      }
+    }
+
+    waveProg.buffers.a_pos.set(new Float32Array(posns), gl.STATIC_DRAW)
+
+    waveProg.uniforms.u_resolution.set(width * devicePixelRatio, height * devicePixelRatio)
+
+    waveShaderPosnsLength = posns.length / 2
+  }
+}
 
 function rand(min, max) {
   return Math.random() * (max - min) + min
@@ -240,6 +320,40 @@ let fish = [], fishTimer = 100
 
 const waveChangeSpeed = 0.004
 
+let hasSpear = parent.hasItem("spear"),
+    usingSpear = false,
+    spearElem, vignetteElem,
+    spearState = 0, // 0 = ready, 1 = just speared, 2 = cooldown
+    spearAngle = 0, visSpearAngle = 0,
+    spearDist = 0, visSpearDist = 0,
+    spearOpacity = 0, visSpearOpacity = 0,
+    spearAccuracy = 0
+
+if (hasSpear) {
+  spearElem = createElem("img#spear")
+  spearElem.src = "../images/spear.png"
+  spearElem.style.opacity = 0
+  vignetteElem = createElem("div#red-vignette")
+  vignetteElem.style.opacity = 0
+  id("logo-section").append(spearElem, vignetteElem)
+
+  addPreloadLink("../images/spear.png", "image")
+  addPreloadLink("../images/spear-used.png", "image")
+}
+
+function toggleSpear() {
+  if (hasSpear) usingSpear = !usingSpear
+  canvas.style.cursor = usingSpear ? "crosshair" : "grab"
+  vignetteElem.animate(
+    [{ opacity: usingSpear ? 1 : 0 }],
+    { duration: 600, fill: "forwards" }
+  )
+}
+
+function mix(a, b, x) {
+  return a + (b - a) * x
+}
+
 let time = 0
 
 function draw(tick) {
@@ -255,7 +369,15 @@ function draw(tick) {
   // fish
 
   if (tick) {
-    fish = fish.filter(x => (x.right ? x.x < width : x.x > -x.width) && x.y < height)
+    fish = fish.filter(x => {
+      let below = x.y >= height - canvasScrollOffset
+      if (below && x.dead && !x.speared) fishExp(x)
+      return (x.right ? x.x < width : x.x > -x.width) && !below
+    })
+
+    hoveredFish = fish.findLast(
+      x => mouseX >= x.x && mouseY >= x.y && mouseX <= x.x + x.width && mouseY <= x.y + x.height
+    )
   
     if (Math.random() < 0.7)
       fishTimer -= speedMult
@@ -263,7 +385,7 @@ function draw(tick) {
     if (fishTimer <= 0 && fish.length < 4 && fishTexLoaded) {
       fishTimer = 100
   
-      let size = Math.random() * 80 + 150,
+      let size = Math.random() * 80 + 150, // also used to calculate EXP reward
           w = size * (Math.random() * 0.2 + 1.2)
   
       let right = Math.random() < 0.5
@@ -363,7 +485,7 @@ function draw(tick) {
     waveProg.uniforms[i.loc].set(i.nums)
   }
 
-  _gl.draw(6)
+  _gl.draw(waveShaderPosnsLength, gl.TRIANGLE_STRIP)
 
   if (draggingFish || pastDraggingFish) {
     _gl.bind(fishProg)
@@ -389,61 +511,155 @@ function draw(tick) {
       _gl.draw(6)
     }
   }
+
+  if (usingSpear) {
+    if (spearState !== 2) {
+      if (spearState === 0 && (!hoveredFish || hoveredFish.dead)) {
+        spearDist = Math.hypot(width, height)
+        spearOpacity = 0
+        spearAccuracy = 0.02
+      } else if (hoveredFish) {
+        let accuracy = spearState === 0 ? 0.5 : 0.75
+        let dx = mix(mouseX, hoveredFish.x + hoveredFish.width  / 2, accuracy) - width  / 2,
+            dy = mix(mouseY, hoveredFish.y + hoveredFish.height / 2, accuracy) - height / 2
+        
+        spearDist = Math.hypot(dx, dy)
+        spearAngle = Math.atan2(dy, dx)
+        
+        if (spearState === 1) {
+          spearAccuracy = 1
+          visSpearOpacity = 1
+        } else {
+          if (spearOpacity <= 0.1) {
+            visSpearDist = Math.hypot(width, height)
+            visSpearAngle = spearAngle
+          }
+          if (spearAccuracy < 0.6) {
+            spearAccuracy = Math.min(0.6, spearAccuracy + 0.01)
+          }
+        }
+
+        spearOpacity = 1
+      }
+    }
+
+    if (visSpearAngle - spearAngle > Math.PI) {
+      spearAngle += 2 * Math.PI
+    } else if (visSpearAngle - spearAngle < -Math.PI) {
+      spearAngle -= 2 * Math.PI
+    }
+    visSpearAngle = mix(visSpearAngle, spearAngle, spearAccuracy)
+    visSpearDist = mix(visSpearDist, spearDist, spearAccuracy)
+
+    if (spearState === 2) {
+      visSpearOpacity = Math.max(0, visSpearOpacity - 0.02)
+    } else if (visSpearOpacity > spearOpacity) {
+      visSpearOpacity = Math.max(spearOpacity, visSpearOpacity - 0.1)
+    } else if (visSpearOpacity < spearOpacity) {
+      visSpearOpacity = Math.min(spearOpacity, visSpearOpacity + 0.1)
+    }
+
+    let cosA = Math.cos(visSpearAngle),
+        sinA = Math.sin(visSpearAngle),
+        finalDist
+    if (spearState === 0) {
+      let edgeDist = Math.min(width / 2 / Math.abs(cosA), height / 2 / Math.abs(sinA))
+      finalDist = visSpearDist * 0.35 + edgeDist * 0.65
+    } else {
+      finalDist = visSpearDist - 40
+    }
+    let spearX = cosA * finalDist,
+        spearY = sinA * finalDist - (spearState !== 0 ? fishPickupHeight * 0.8 : 0)
+    
+    spearElem.style.left = spearX + width  / 2 + "px"
+    spearElem.style.top  = spearY + height / 2 + "px"
+    spearElem.style.transform = `translate(-6px, ${canvasScrollOffset - 6}px) rotate(${visSpearAngle}rad)`
+    spearElem.style.opacity = spearState === 2 ? Math.min(1, visSpearOpacity * 2) : visSpearOpacity
+
+    if (spearX < 0 || spearX >= width || spearY < 0 || spearY >= width)
+      opacity = 0
+
+    if (spearState === 1) {
+      spearState = 2
+      spearElem.src = "../images/spear-used.png"
+      setTimeout(() => {
+        spearState = 0
+        spearElem.src = "../images/spear.png"
+      }, 1000)
+    }
+  } else if (hasSpear) {
+    spearElem.style.opacity = 0
+  }
+}
+
+function fishExp(fish, mult = 1) {
+  let pos = canvas.getBoundingClientRect()
+  exp(Math.floor((fish.height / 10 - 7) * mult), pos.left + fish.x + fish.width * (fish.right ? 0.6 : 0.4), fish.y - canvasScrollOffset)
 }
 
 function frame() {
   draw(true)
-
   requestAnimationFrame(frame)
 }
 
 let mouseX = -1, mouseY = -1
+let hoveredFish, draggingFish, pastDraggingFish
 
 canvas.onmousemove = e => {
   mouseX = e.offsetX
   mouseY = e.offsetY
 
-  if (draggingFish) {
+  if (draggingFish && !usingSpear) {
     draggingFish.x = mouseX - draggingFish.offsetX
     draggingFish.y = mouseY - draggingFish.offsetY
   }
 }
 
-let draggingFish, pastDraggingFish
+canvas.onmousedown = () => {
+  if (!hoveredFish || draggingFish || (usingSpear && spearAccuracy < 0.2)) return
 
-canvas.onmousedown = e => {
-  mouseX = e.offsetX
-  mouseY = e.offsetY
-
-  draggingFish = fish.findLast(
-    x => mouseX >= x.x && mouseY >= x.y && mouseX <= x.x + x.width && mouseY <= x.y + x.height
-  )
-
-  if (draggingFish) {
-    fish.splice(fish.indexOf(draggingFish), 1)
-    fish.push(draggingFish)
-
-    draggingFish.offsetX = mouseX - draggingFish.x
-    draggingFish.offsetY = mouseY - draggingFish.y
-
-    draggingFish.deathTimer = 500
-
-    if (draggingFish === pastDraggingFish)
-      pastDraggingFish = null
-
+  if (usingSpear) {
+    if (spearState !== 0) return
+    spearState = 1
+    hoveredFish.spearTime = performance.now()
+    hoveredFish.z = 1
+    hoveredFish.speared = true // prevent exp reward when it goes offscreen
+  } else {
     canvas.style.cursor = "grabbing"
   }
+  
+  draggingFish = hoveredFish
+  fish.splice(fish.indexOf(draggingFish), 1)
+  fish.push(draggingFish)
+
+  draggingFish.offsetX = mouseX - draggingFish.x
+  draggingFish.offsetY = mouseY - draggingFish.y
+
+  draggingFish.deathTimer = usingSpear ? 1 : 500
+
+  if (draggingFish === pastDraggingFish)
+    pastDraggingFish = null
 }
 
 onmouseup = () => {
-  if (draggingFish) {
+  if (!draggingFish) return
+  
+  let delay = usingSpear
+    ? Math.max(0, draggingFish.spearTime - performance.now() + 700)
+    : 0
+  
+  setTimeout(() => {
+    if (draggingFish.speared) {
+      fishExp(draggingFish, 0.5)
+    }
+      
     pastDraggingFish = draggingFish
     pastDraggingFish.gravity = 0
   
     draggingFish = null
 
-    canvas.style.cursor = "grab"
-  }
+    canvas.style.cursor = usingSpear ? "crosshair" : "grab"
+  }, delay)
 }
 
 addEventListener("DOMContentLoaded", () => {
@@ -494,4 +710,6 @@ function updateSize() {
   bgTexture = bgFB.texture
   
   fishProg.uniforms.u_resolution.set(width, height)
+
+  updateWaveShader()
 }
