@@ -9,7 +9,7 @@ function createDirectoryList(title, obj, options) {
   for (let [link, i] of Object.entries(obj)) {
     let info = i.info ? `— <span class = "link-info">${i.info}</span> ` : ""
 
-    if (options.legacyFormat)
+    if (options.legacyFormat) {
       html += `
         <li>
           <a class = "entry" href = "../legacy/${i.link}" data-linktext = "${link}" instant>
@@ -18,7 +18,7 @@ function createDirectoryList(title, obj, options) {
           </a>
         </li>
       `
-    else if (!i.hide) {
+    } else if (!i.hide) {
       let [pageLink, pageName] = options.shnebirFormat
         ? [i.link.startsWith("../") ? `shnebir.com/${i.link === "./" ? "directory" : i.link.slice(3)}` : i.link.replace("https://", ""), link]
         : [`tiki.boats/${link}`, i.name]
@@ -52,19 +52,18 @@ function createDirectory(title, obj, options = {}) {
     
     obj.then(links => {
       let elem = createElem("ul.directory")
-
       elem.innerHTML = createDirectoryList(title, links, options)
-      
       wrapper.querySelector(".loading").replaceWith(elem)
     })
-  } else
+  } else {
     listHTML = `
       <ul class = "directory">
         ${createDirectoryList(title, obj, options)}
       </ul>
     `
+  }
 
-    wrapper.innerHTML = `
+  wrapper.innerHTML = `
     <details${options.id === initiallyOpen || initiallyOpen === "all" ? " open" : ""}>
       <summary>
         <div class = "details-arrow"></div>

@@ -1,19 +1,19 @@
 function updateExp() {
   let expCount = parent.getExp()
   id("exp-count").innerText = expCount
-  id("exp-header").classList[expCount ? "remove" : "add"]("no-exp")
+  id("exp-header").classList.toggle("no-exp", !expCount)
 
   for (let name in itemElems) {
     let tooExpensive = itemData[name].cost > expCount
     let disabled = tooExpensive || itemData[name].once && parent.hasItem(name)
-    itemElems[name].classList[tooExpensive ? "add" : "remove"]("too-expensive")
-    itemElems[name].classList[disabled ? "add" : "remove"]("disabled")
+    itemElems[name].classList.toggle("too-expensive", tooExpensive)
+    itemElems[name].classList.toggle("disabled", disabled)
   }
 }
 
 let itemElems = {}
 
-const dev = parent["\u0000dev"]
+const { "\u0000dev": dev } = parent
 
 for (let name in itemData) {
   let data = itemData[name]

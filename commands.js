@@ -1,37 +1,37 @@
 const commands = {
-  goto : {
+  goto: {
     run(tokens) {
       location = tokens[0] || ""
     },
-    autofill : [
+    autofill: [
       [
         ...Object.keys(pages),
         ...Object.values(legacyPages).map(x => `legacy/${x.link}`)
       ]
     ]
   },
-  page : {
+  page: {
     run(tokens) {
       openPage(tokens[0] || "")
     },
-    autofill : [
+    autofill: [
       Object.keys(pages)
     ]
   },
-  reload : {
+  reload: {
     run() {
       openPage(currentPage)
     }
   },
-  overlaywindow : {
+  overlaywindow: {
     run(tokens) {
       showOverlayWindow(tokens[0] || "")
     },
-    autofill : [
+    autofill: [
       Object.keys(pages)
     ]
   },
-  notif : {
+  notif: {
     run(tokens) {
       if (tokens[0] === "clear")
         clearNotifications(tokens[1] === "force")
@@ -43,14 +43,14 @@ const commands = {
         notification(tokens.slice(1 + noX).join(" "), tokens[0], !noX)
       }
     },
-    autofill : [
+    autofill: [
       ["clear", "short", "long", "persistent"],
       tokens => tokens[0] === "clear"
         ? ["force", "normal"]
-        : ["short", "long", "persistent"].includes(tokens[0]) ? ["no-x"] : []
+       : ["short", "long", "persistent"].includes(tokens[0]) ? ["no-x"]: []
     ]
   },
-  setting : {
+  setting: {
     run(tokens) {
       let setting = tokens[0]
     
@@ -79,7 +79,7 @@ const commands = {
           notification(`Could not set setting '${setting}' to '${value}'`, "short")
       }
     },
-    autofill : [
+    autofill: [
       Object.keys(settings),
       tokens => {
         let setting = settings[tokens[0]]
@@ -88,30 +88,30 @@ const commands = {
 
         return setting.type === "boolean"
           ? ["true", "false", "yes", "no", "get"]
-          : Object.keys(setting.options).concat("get")
+         : Object.keys(setting.options).concat("get")
       }
     ]
   },
-  actiontext : {
+  actiontext: {
     run(tokens) {
       actionText(clientMouseX, clientMouseY, tokens.join(" "))
     }
   },
-  sparkle : {
+  sparkle: {
     run(tokens) {
       parent.sparkle(tokens[0] !== "off")
     },
-    autofill : [
+    autofill: [
       ["on", "off"]
     ]
   },
-  confetti : {
+  confetti: {
     run(tokens) {
       let density = parseFloat(tokens[0] || "1")
-      confetti(density > 0 && density <= 1000 ? density : 1)
+      confetti(density > 0 && density <= 1000 ? density: 1)
     }
   },
-  fish : {
+  fish: {
     run() {
       if (currentPage !== "home") return
       showHamburger = false
@@ -122,10 +122,10 @@ const commands = {
       )
     }
   },
-  storage : {
+  storage: {
     run(tokens) {
       if (!tokens[0]) {
-        notification(`${localStorage.length} keys in local storage${localStorage.getItem("backup") ? "<br>Has backup" : ""}`, "short")
+        notification(`${localStorage.length} keys in local storage${localStorage.getItem("backup") ? "<br>Has backup": ""}`, "short")
       } else if (tokens[0] === "save") {
         let storage = {}
   
@@ -141,7 +141,7 @@ const commands = {
         parent.location = addURLParam(
           parent.location.href,
           "backup",
-          `${Object.keys(storage).length}C${storage.backup ? "N" : ""}`
+          `${Object.keys(storage).length}C${storage.backup ? "N": ""}`
         )
       } else if (tokens[0] === "load") {
         let storage = localStorage.getItem("backup")
@@ -166,11 +166,11 @@ const commands = {
         parent.location = addURLParam(
           parent.location.href,
           "backup",
-          Object.keys(storage).length + (storage.backup ? "N" : "")
+          Object.keys(storage).length + (storage.backup ? "N": "")
         )
       }
     },
-    autofill : [
+    autofill: [
       ["save", "load"]
     ]
   }
@@ -182,12 +182,12 @@ if (backupData) {
       count = parseInt(backupData),
       nested = backupData.endsWith("N")
   
-  notification(`Storage backup ${created ? "created" : "loaded"}<br>${count} keys${nested ? ", has nested backup" : ""}`, "short")
+  notification(`Storage backup ${created ? "created": "loaded"}<br>${count} keys${nested ? ", has nested backup": ""}`, "short")
 }
 
 if (window["\u0000dev"]) {
   Object.assign(commands, {
-    exp : {
+    exp: {
       run(tokens) {
         if (tokens[0] === "get") {
           notification(`Current EXP: <span style = "font-family: var(--exp-font); font-weight: bold;">${getExp()}</span>`, "short")
@@ -204,17 +204,17 @@ if (window["\u0000dev"]) {
           }
         }
       },
-      autofill : [
+      autofill: [
         ["get", "set", "add", "sub"]
       ]
     },
-    item : {
+    item: {
       run(tokens) {
         let [action, name, count] = tokens
 
         if (!(name in itemData)) {
           if (name === "*") {
-            let itemList = ["use", "del"].includes(action) ? items : itemData
+            let itemList = ["use", "del"].includes(action) ? items: itemData
             for (let i in itemList)
               commands.item.run([action, i, count || "all"])
           } else {
@@ -241,7 +241,7 @@ if (window["\u0000dev"]) {
           } else {
             for (let i = 0; i < count; i++) {
               if (!purchaseItem(name)) {
-                notification(i ? `Purchased ${i} '${itemData[name].name}' for ${itemData[name].cost * i} EXP` : `Not enough EXP (need ${itemData[name].cost}, have ${getExp()})`)
+                notification(i ? `Purchased ${i} '${itemData[name].name}' for ${itemData[name].cost * i} EXP`: `Not enough EXP (need ${itemData[name].cost}, have ${getExp()})`)
                 break
               }
             }
@@ -258,17 +258,17 @@ if (window["\u0000dev"]) {
             if (!deleteItem(name)) break
         }
       },
-      autofill : [
+      autofill: [
         ["get", "run", "del", "buy", "use"],
         Object.keys(itemData).concat("*"),
-        tokens => ["buy", "use", "del"].includes(tokens[0]) ? ["all"] : []
+        tokens => ["buy", "use", "del"].includes(tokens[0]) ? ["all"]: []
       ]
     }
   })
 }
 
 // pls dont hack
-const DEV_LINK = "f7decadb-bf65-49f9-a237-32155b0dc62b-00-2zd82xa5yg7wt.kirk.replit.dev"
+const DEV_LINK = "localhost:63343/tiki.boats"
 
 if (window.DEV) {
   commands.prod = {
@@ -349,8 +349,8 @@ function selectAutofill(index) {
   let lastAutofill = currentAutofill.options[lastIndex]?.innerText || "",
       inputSlice = -lastAutofill.length
 
-  commandInput.value = (inputSlice ? commandInput.value.slice(0, inputSlice) : commandInput.value)
-    + currentAutofill.options[index].innerText.slice(lastIndex === -1 ? currentAutofill.offset : 0)
+  commandInput.value = (inputSlice ? commandInput.value.slice(0, inputSlice): commandInput.value)
+    + currentAutofill.options[index].innerText.slice(lastIndex === -1 ? currentAutofill.offset: 0)
 
   currentAutofill.options[lastIndex]?.classList.remove("selected")
   currentAutofill.options[index].classList.add("selected")
@@ -400,7 +400,7 @@ function displaySuggestions(suggestions, lastTok) {
   let offset = lastTok.length
 
   currentAutofill = {
-    selected : -1,
+    selected: -1,
     offset
   }
 
@@ -408,7 +408,7 @@ function displaySuggestions(suggestions, lastTok) {
     let elem = createElem("button.command-autofill-option.reset"),
         text = escapeHTML(x)
 
-    elem.innerHTML = offset ? `<b>${text.slice(0, offset)}</b>${text.slice(offset)}` : text
+    elem.innerHTML = offset ? `<b>${text.slice(0, offset)}</b>${text.slice(offset)}`: text
 
     elem.onmousedown = e => {
       e.preventDefault()
@@ -429,7 +429,7 @@ function displaySuggestions(suggestions, lastTok) {
 
   id("command-autofill").append(...currentAutofill.options)
 
-  let pos = getTextWidth(lastTok ? commandInput.value.slice(0, -offset) : commandInput.value, "13px Menlo, monospace")
+  let pos = getTextWidth(lastTok ? commandInput.value.slice(0, -offset): commandInput.value, "13px Menlo, monospace")
     + commandInput.getBoundingClientRect().left
     
   id("command-autofill").style.left = pos - 6 + "px"
@@ -439,10 +439,10 @@ function parseCommand(rawCommand) {
   let tokens = rawCommand.trimStart().split(/\s+/)
 
   return {
-    command : tokens[0],
-    tokens : tokens.slice(1),
-    fullTokens : tokens,
-    obj : commands[tokens[0]]
+    command: tokens[0],
+    tokens: tokens.slice(1),
+    fullTokens: tokens,
+    obj: commands[tokens[0]]
   }
 }
 

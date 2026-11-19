@@ -1,217 +1,217 @@
 /*
 
-page url (folder name) : {
-  name : "Name in Directory"
-  title : "Tab Title (defaults to page.name)"
-  info : "page info displayed in the directory"
-  nav : "all" (default) | "hamburger" | "fade" | "none"
-  wip : false (default) | true
-  favicon : false (default) | true
+page url (folder name): {
+  name: "Name in Directory"
+  title: "Tab Title (defaults to page.name)"
+  info: "page info displayed in the directory"
+  nav: "all" (default) | "menu" | "fade" | "none"
+  wip: false (default) | true
+  favicon: false (default) | true
 }
 
 */
 
 const pages = {
-  home : {
-    name : "Homepage",
-    title : "Tiki",
-    nav : "hamburger"
+  home: {
+    name: "Homepage",
+    title: "Tiki",
+    nav: "menu"
   },
-  directory : {
-    name : "Directory",
-    title : "Tiki Directory",
-    info : "the current page"
+  directory: {
+    name: "Directory",
+    title: "Tiki Directory",
+    info: "the current page"
   },
-  settings : {
-    name : "Settings",
-    title : "Tiki Settings",
-    wip : true
+  settings: {
+    name: "Settings",
+    title: "Tiki Settings",
+    wip: true
   },
-  about : {
-    name : "About",
-    title : "About Tiki"
+  about: {
+    name: "About",
+    title: "About Tiki"
   },
-  games : {
-    name : "Tiki Games",
-    wip : true
+  games: {
+    name: "Tiki Games",
+    wip: true
   },
-  platformer : {
-    name : "Tiki Platformer 2.0",
-    nav : "none"
+  platformer: {
+    name: "Tiki Platformer 2.0",
+    nav: "none"
   },
-  "hex-chess" : {
-    name : "Hexagonal Chess",
-    nav : "hamburger",
-    favicon : true
+  "hex-chess": {
+    name: "Hexagonal Chess",
+    nav: "menu",
+    favicon: true
   },
-  tetris : {
-    name : "Tetris",
-    title : "Tiki Tetris",
-    nav : "hamburger"
+  tetris: {
+    name: "Tetris",
+    title: "Tiki Tetris",
+    nav: "menu"
   },
-  puzzle : {
-    name : "Puzzle",
-    title : "Tiki Puzzle",
-    info : "multiplayer coming soon (maybe)"
+  puzzle: {
+    name: "Puzzle",
+    title: "Tiki Puzzle",
+    info: "multiplayer coming soon (maybe)"
   },
-  colorle : {
-    name : "Colorle",
-    info : "Wordle but colors"
+  colorle: {
+    name: "Colorle",
+    info: "Wordle but colors"
   },
-  "wrodle-bot" : {
-    name : "Wrodle Bot",
-    info : "based on 'Wrodle' from games.shnebir.com"
+  "wrodle-bot": {
+    name: "Wrodle Bot",
+    info: "based on 'Wrodle' from games.shnebir.com"
   },
-  keyboard : {
-    name : "Keyboard",
-    info : "use your computer keyboard as a musical keyboard",
-    wip : true
+  keyboard: {
+    name: "Keyboard",
+    info: "use your computer keyboard as a musical keyboard",
+    wip: true
   },
-  bingo : {
-    name : "Bingo",
-    info : "create a custom bingo board",
-    wip : true
+  bingo: {
+    name: "Bingo",
+    info: "create a custom bingo board",
+    wip: true
   },
-  "olw-answers" : {
-    name : "One Letter Wordle Answers",
-    info : "upcoming answers to shnebir.com One Letter Wordle"
+  "olw-answers": {
+    name: "One Letter Wordle Answers",
+    info: "upcoming answers to shnebir.com One Letter Wordle"
   },
-  "screen-saver" : {
-    name : "Screen Saver",
-    info : "“drift” macos screensaver",
-    nav : "fade"
+  "screen-saver": {
+    name: "Screen Saver",
+    info: "“drift” macos screensaver",
+    nav: "fade"
   },
-  "screen-saver-2" : {
-    name : "Screen Saver 2",
-    info : "less polished but much faster",
-    nav : "fade"
+  "screen-saver-2": {
+    name: "Screen Saver 2",
+    info: "less polished but much faster",
+    nav: "fade"
   },
-  butterbar : {
-    name : "Butterbar",
-    info : "best enjoyed by those who don’t question it",
-    nav : "hamburger"
+  butterbar: {
+    name: "Butterbar",
+    info: "best enjoyed by those who don’t question it",
+    nav: "menu"
   },
-  pop : {
-    name : "Pop",
-    title : "Pop!"
+  pop: {
+    name: "Pop",
+    title: "Pop!"
   },
-  trackpad : {
-    name : "Gradient",
-    title : "Gradient",
-    info : "only works in safari, with a trackpad"
+  trackpad: {
+    name: "Gradient",
+    title: "Gradient",
+    info: "only works in safari, with a trackpad"
   },
-  shop : {
-    name : "Tiki Shop",
-    hide : true
+  shop: {
+    name: "Tiki Shop",
+    hide: true
   },
-  tonsky : {
-    name : "YELLOW",
-    info : "Prepare your eyes to view tonsky.me",
-    nav : "none",
-    hide : true
+  tonsky: {
+    name: "YELLOW",
+    info: "Prepare your eyes to view tonsky.me",
+    nav: "none",
+    hide: true
   },
-  lunch : {
-    name : "Lunch picker",
-    title : "Tiki lunch picker",
-    info : "pick your school lunch",
-    hide : true
+  lunch: {
+    name: "Lunch picker",
+    title: "Tiki lunch picker",
+    info: "pick your school lunch",
+    hide: true
   },
-  testing : {
-    name : "Tiki Testing",
-    hide : true
+  testing: {
+    name: "Tiki Testing",
+    hide: true
   },
-  blank : {
-    name : "Blank",
-    hide : true,
-    nav : "none"
+  blank: {
+    name: "Blank",
+    hide: true,
+    nav: "none"
   }
 }
 
 ////////////////////////////////
 
 const legacyPages = {
-  Homepage : {
-    link : "" 
+  Homepage: {
+    link: ""
   },
-  About : {
-    link : "about/" 
+  About: {
+    link: "about/"
   },
-  Settings : {
-    link : "settings/" 
+  Settings: {
+    link: "settings/"
   },
-  Directory : {
-    link : "directory/"
+  Directory: {
+    link: "directory/"
   },
-  "The tiki fish" : {
-    link : "tiki-fish/" 
+  "The tiki fish": {
+    link: "tiki-fish/"
   },
-  "Shnebir.com partnership" : {
-    link : "partners/" 
+  "Shnebir.com partnership": {
+    link: "partners/"
   },
-  Games : {
-    link : "games/" 
+  Games: {
+    link: "games/"
   },
-  "32 Dice" : {
-    link : "games/dice/" 
+  "32 Dice": {
+    link: "games/dice/"
   },
-  Platformer : {
-    link : "games/platformer/" 
+  Platformer: {
+    link: "games/platformer/"
   },
-  Bananagrams : {
-    link : "games/bananagrams/" 
+  Bananagrams: {
+    link: "games/bananagrams/"
   },
-  "ZXCVBNM™ image gallery" : {
-    link : "zxcvbnm/" 
+  "ZXCVBNM™ image gallery": {
+    link: "zxcvbnm/"
   },
-  "Color of the day" : {
-    link : "color-of-the-day/" 
+  "Color of the day": {
+    link: "color-of-the-day/"
   },
-  "Color of the second" : {
-    link : "color-of-the-second/" 
+  "Color of the second": {
+    link: "color-of-the-second/"
   },
-  "FishRipple" : {
-    link : "fish-ripple/",
-    info : "no further explanation needed" 
+  "FishRipple": {
+    link: "fish-ripple/",
+    info: "no further explanation needed"
   },
-  "Typing test but it’s just the alphabet" : {
-    link : "typing-test/"
+  "Typing test but it’s just the alphabet": {
+    link: "typing-test/"
   },
-  "A selection of colors" : {
-    link : "colors/" 
+  "A selection of colors": {
+    link: "colors/"
   },
-  "All of the possible RGB colors kinda" : {
-    link : "all-colors/",
-    info : "may or may not actually contain all RGB colors"
+  "All of the possible RGB colors kinda": {
+    link: "all-colors/",
+    info: "may or may not actually contain all RGB colors"
   },
-  "A thing about carabiners" : {
-    link : "carabiner/",
-    info : "you have been warned" 
+  "A thing about carabiners": {
+    link: "carabiner/",
+    info: "you have been warned"
   },
-  "Questionable attempt at a “chat”" : {
-    link : "chat/",
-    info : "does not—at all—work"
+  "Questionable attempt at a “chat”": {
+    link: "chat/",
+    info: "does not—at all—work"
   },
-  "Homophone translator" : {
-    link : "sounds-similar/" 
+  "Homophone translator": {
+    link: "sounds-similar/"
   },
-  "Safari no internet page" : {
-    link : "no-internet/" 
+  "Safari no internet page": {
+    link: "no-internet/"
   },
-  "Visualization with physics" : {
-    link : "visualizations/physics/" 
+  "Visualization with physics": {
+    link: "visualizations/physics/"
   },
-  "Food vs. feed consumption map" : {
-    link : "visualizations/map/" 
+  "Food vs. feed consumption map": {
+    link: "visualizations/map/"
   },
-  "Other visualization thingy" : {
-    link : "visualizations/plot/" 
+  "Other visualization thingy": {
+    link: "visualizations/plot/"
   },
-  "A beautiful YouTube video" : {
-    link : "cold-food/",
-    info : "you have, once again, been warned" 
+  "A beautiful YouTube video": {
+    link: "cold-food/",
+    info: "you have, once again, been warned"
   },
-  "Just a normal page" : {
-    link : "why/",
-    info : "look in the “sources” tab in the dev tools"
+  "Just a normal page": {
+    link: "why/",
+    info: "look in the “sources” tab in the dev tools"
   }
 }

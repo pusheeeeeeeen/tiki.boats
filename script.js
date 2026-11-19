@@ -80,10 +80,10 @@ function getCurrentPage() { return currentPage }
 
 // [showNavbar, showHamburger, fadeHamburger]
 const navModes = {
-  all : [true, true, false],
-  hamburger : [false, true, false],
-  fade : [false, true, true],
-  none : [false, false, false]
+  all: [true, true, false],
+  menu: [false, true, false],
+  fade: [false, true, true],
+  none: [false, false, false]
 }
 
 // navType = "default" | "replace" | "historyForward" | "historyBack"
@@ -119,7 +119,7 @@ function openPage(rawPage, navType = "default") {
   let oldShowNavbar = showingNavbar
 
   if (urlParams.has("nav")) {
-    showNavbar = showHamburger = fadeHamburger = false
+    [showNavbar, showHamburger, fadeHamburger] = navModes[urlParams.get("nav")] || navModes.none
   } else {
     [showNavbar, showHamburger, fadeHamburger] = navModes[data.nav || "all"]
   }
@@ -251,10 +251,9 @@ function updateHamburgerFading() {
 
   setHamburger(true)
   
-  if (fadeHamburger && !hamburgerShown)
-    hamburgerFadeTimeout = setTimeout(() => {
-      setHamburger(false)
-    }, 1000)
+  if (fadeHamburger && !hamburgerShown) {
+    hamburgerFadeTimeout = setTimeout(() => setHamburger(false), 1000)
+  }
 }
 
 let hamburgerShown = false
@@ -377,7 +376,7 @@ document.addEventListener("mouseover", e => {
 let pageNum = 0
 
 onpopstate = e => {
-  let {p, n} = e.state || {p : "home", n : 0}
+  let { p, n } = e.state || { p: "home", n: 0 }
 
   openPage(p, n > pageNum ? "historyForward" : "historyBack")
 
@@ -439,12 +438,12 @@ addEventListener("DOMContentLoaded", () => {
     id("clear-notifications-wrapper").style.transition = "opacity 0.3s ease-out"
   })
   
-  id("home-button").addEventListener("click", () => { openPage("home") })
+  id("home-button").addEventListener("click", () => openPage("home"))
   
-  id("hamburger-button").addEventListener("click", () => { toggleHamburger() })
+  id("hamburger-button").addEventListener("click", () => toggleHamburger())
 
   classAll("settings-button").forEach(elem => {
-    elem.addEventListener("click", () => { openPage("settings") })
+    elem.addEventListener("click", () => openPage("settings"))
   })
 })
 
@@ -775,8 +774,7 @@ class ConfettiParticle {
     confCanvas.width = confCanvas.offsetWidth * devicePixelRatio
     confCanvas.height = confCanvas.offsetHeight * devicePixelRatio
 
-    for (let i of this.particles)
-      i.draw()
+    for (let i of this.particles) i.draw()
   }
   
   constructor() {
@@ -860,7 +858,7 @@ function addPreloadLink(url, as) {
 
 ////////////////////////////////
 
-if (location.origin.endsWith(".replit.dev")) {
+if (location.host === "localhost:63343") {
   window.DEV = window[atob("AGRldg==")] = true
   document.body.classList.add("dev")
 }

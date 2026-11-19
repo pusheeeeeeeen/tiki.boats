@@ -3,9 +3,7 @@ const canvas = id("canvas"), ctx = canvas.getContext("2d")
 function rand() {
   // https://en.wikipedia.org/wiki/Box–Muller_transform
   
-  let r1 = Math.random(),
-      r2 = Math.random()
-
+  let r1 = Math.random(), r2 = Math.random()
   return Math.sqrt(-2 * Math.log(r1)) * Math.cos(2 * Math.PI * r2)
 }
 
@@ -14,26 +12,17 @@ function dot(x1, y1, z1, x2, y2, z2) {
 }
 
 function normalize(x, y, z) {
-  let divisor = Math.hypot(x, y, z)
-
-  return [x / divisor, y / divisor, z / divisor]
+  let length = Math.hypot(x, y, z)
+  return [x / length, y / length, z / length]
 }
 
 const randomNums = {}
 
 function getRandom(id, x, y, t) {
-  if (!(id in randomNums))
-    randomNums[id] = {}
-  
   let key = `${x}:${y}:${t}`
 
-  if (key in randomNums[id])
-    return randomNums[id][key]
-  else
-    return randomNums[id][key] = normalize(rand(), rand(), rand())
+  return (randomNums[id] ??= {})[key] ??= normalize(rand(), rand(), rand())
 }
-
-const cornerCache = {}
 
 function corner(id, intX, intY, intT, x, y, t) {
   let num = getRandom(id, intX, intY, intT)
@@ -131,14 +120,12 @@ function draw() {
   start ??= performance.now()
   let t = (performance.now() - start) / 7000 // 7000
 
-  let multiplier = smoothstep(Math.min(t * 2, 1))
-
   ctx.lineCap = "round"
   ctx.globalCompositeOperation = "screen"
 
-  let {width, height} = canvas
+  let { width, height } = canvas
   
-  for (let rawX = 0; rawX < width + gridSize * margin * 2; rawX += gridSize)
+  for (let rawX = 0; rawX < width + gridSize * margin * 2; rawX += gridSize) {
     for (let rawY = 0; rawY < height + gridSize * margin * 2; rawY += gridSize) {
       let x = rawX - gridSize * margin,
           y = rawY - gridSize * margin
@@ -182,6 +169,7 @@ function draw() {
       ctx.lineTo(endX, endY)
       ctx.stroke()
     }
+  }
 }
 
 function frame() {

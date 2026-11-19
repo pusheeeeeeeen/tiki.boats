@@ -161,7 +161,7 @@ class Game {
     id("menu-highscore").innerText = this.level.highscoreBeforeRun || "none"
     id("menu-best-distance").innerText = this.level.bestDistBeforeRun || 0
 
-    id("menu-info").classList[this.level.setSeed ? "add" : "remove"]("show-replay-disclaimer")
+    id("menu-info").classList.toggle("show-replay-disclaimer", this.level.setSeed)
   }
 
   ui = {
