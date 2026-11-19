@@ -5,7 +5,7 @@ function updateExp() {
 
   for (let name in itemElems) {
     let tooExpensive = itemData[name].cost > expCount
-    let disabled = tooExpensive || itemData[name].once && parent.hasItem(name)
+    let disabled = tooExpensive || !!itemData[name].once && parent.hasItem(name)
     itemElems[name].classList.toggle("too-expensive", tooExpensive)
     itemElems[name].classList.toggle("disabled", disabled)
   }
